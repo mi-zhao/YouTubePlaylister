@@ -7,6 +7,17 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography'
+
+import Button from '@mui/material/Button';
+
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import PersonIcon from '@mui/icons-material/Person';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import { Icon } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -55,6 +66,23 @@ const HomeScreen = () => {
                     listCard
                 }
                 <MUIDeleteModal />
+            </div>
+            
+            <div id="navigate-toolbar">
+                <IconButton>
+                    <HomeIcon sx={{ fontSize: 30 }}/>
+                </IconButton>
+
+                <IconButton>
+                    <PeopleAltIcon sx={{ fontSize: 30 }}/>
+                </IconButton>
+                
+                <IconButton>
+                    <PersonIcon sx={{ fontSize: 30 }}/>
+                </IconButton>
+                
+                <TextField  sx={{marginLeft:"2in", width:"35em"}} id="outlined-basic" label="Search" variant="outlined" size="small" margin="auto"/>
+                
             </div>
         </div>)
 }
