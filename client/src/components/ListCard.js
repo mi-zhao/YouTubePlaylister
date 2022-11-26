@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -83,7 +84,7 @@ function ListCard(props) {
             sx={{p: 1 }}
             style={{ width: '98%'}}
             onClick={(event) => {
-                console.log("id", idNamePair)
+                console.log("idnamepair", idNamePair)
             }}
         >
             {/* <Box sx={{ p: 1 }}>
@@ -99,9 +100,12 @@ function ListCard(props) {
                 </IconButton>
             </Box> */}
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By:"}</Box>
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published:"}</Box>
-
+            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By: " + idNamePair.ownerName}</Box>
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.createdAt}</Box>
+            
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%',p: 3}}>{"Listens: " + idNamePair.listens}</Box>
+            <Box sx={{marginLeft:'40%'}}> <IconButton><FaThumbsUp/></IconButton> </Box>
+            <Box sx={{marginLeft:'15%'}}> <IconButton><FaThumbsDown/></IconButton> </Box>
         </ListItem>
 
     if (editActive) {

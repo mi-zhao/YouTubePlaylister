@@ -287,9 +287,10 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {
-            const response = await api.getPlaylistPairs();
+            const response = await api.getPlaylists();
             if (response.data.success) {
-                let pairsArray = response.data.idNamePairs;
+                let pairsArray = response.data.data;
+                console.log("PAIRSARRAY",pairsArray)
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: pairsArray
