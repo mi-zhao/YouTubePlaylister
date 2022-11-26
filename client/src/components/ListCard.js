@@ -80,14 +80,13 @@ function ListCard(props) {
             id={idNamePair._id}
             key={idNamePair._id}
             className={"list-card unselected-list-card"}
-            sx={{ marginTop: '15px', display: 'flex', p: 1 }}
-            style={{ width: '98%', fontSize: '24pt'}}
+            sx={{p: 1 }}
+            style={{ width: '98%'}}
             onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
+                console.log("id", idNamePair)
             }}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-            <Box sx={{ p: 1 }}>
+            {/* <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
                     <EditIcon style={{fontSize:'24pt'}} />
                 </IconButton>
@@ -98,7 +97,11 @@ function ListCard(props) {
                     }} aria-label='delete'>
                     <DeleteIcon style={{fontSize:'24pt'}} />
                 </IconButton>
-            </Box>
+            </Box> */}
+            <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
+            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By:"}</Box>
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published:"}</Box>
+
         </ListItem>
 
     if (editActive) {

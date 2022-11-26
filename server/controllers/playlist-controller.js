@@ -8,6 +8,7 @@ const User = require('../models/user-model');
     @author McKilla Gorilla
 */
 createPlaylist = (req, res) => {
+    console.log(req)
     const body = req.body;
     console.log("createPlaylist body: " + JSON.stringify(body));
 
@@ -17,6 +18,7 @@ createPlaylist = (req, res) => {
             error: 'You must provide a Playlist',
         })
     }
+
 
     const playlist = new Playlist(body);
     console.log("playlist: " + playlist.toString());
@@ -34,6 +36,9 @@ createPlaylist = (req, res) => {
                 errorMessage: "You cannot edit someone's playlist!"
             })
         }
+
+        console.log("playlistnow", playlist)
+
         user.playlists.push(playlist._id);
         user
             .save()
@@ -140,7 +145,7 @@ getPlaylistPairs = async (req, res) => {
                         let list = playlists[key];
                         let pair = {
                             _id: list._id,
-                            name: list.name
+                            name: list.name,
                         };
                         pairs.push(pair);
                     }

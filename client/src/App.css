@@ -5,7 +5,7 @@
   --swatch-contrast: #111111;
   --swatch-accent: #669966;
   --swatch-status: #123456;
-  --my-font-family: "Robaaaoto";
+  --my-font-family: Arial, Helvetica, sans-serif;
   --bounceEasing: cubic-bezier(0.51, 0.92, 0.24, 1.15);
 }
 
@@ -15,7 +15,7 @@ body {
 
 #root {
   background-color: var(--swatch-primary);
-  font-family: "Lexend Exa";
+  font-family: Arial, Helvetica, sans-serif;;
   position: absolute;
   width: 80%;
   left: 10%;
@@ -50,7 +50,7 @@ body {
 #splash-screen {
   background-image: linear-gradient(to bottom, #8FB1FF, #FF8E42);
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;;
   font-size: 5vw;
   padding-top: 10%;
   padding-bottom: 5%;
@@ -151,8 +151,17 @@ body {
   margin: 1%;
 }
 
-#youtube_test_player {
-  border: solid 4px #37474F
+/* .youtube-player iframe {
+  position: relative;
+  right: 0; 
+  float: 'right'
+} */
+.youtube-player{
+  position: relative;
+  float: right;
+  z-index:3;
+  margin-top: 5%;
+  margin-right:1ch;
 }
 
 #list-selector-list {
@@ -174,6 +183,8 @@ body {
   margin: 10px;
   padding: 20px;
   border-radius: 25px;
+  font-weight: bold;
+  height:3cm;
 }
 
 .list-card:aria-disabled,

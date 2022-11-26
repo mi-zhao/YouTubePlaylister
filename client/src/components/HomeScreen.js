@@ -18,6 +18,10 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { Icon } from '@mui/material';
 import { InputAdornment } from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
+import YoutubePlayer from "./YouTubePlayer";
+import YouTubePlayer from './YouTubePlayer';
+
 /*
     This React component lists all the top5 lists in the UI.
     
@@ -35,6 +39,7 @@ const HomeScreen = () => {
     }
     let listCard = "";
     if (store) {
+        
         listCard = 
             <List sx={{ width: '100%', bgcolor: '#e6e6e6' }}>
             {
@@ -82,7 +87,10 @@ const HomeScreen = () => {
                 </IconButton>
                 
                 <TextField  sx={{marginLeft:"2in", width:"35em"}} id="outlined-basic" label="Search" variant="outlined" size="small" margin="auto"/>
-                
+                <IconButton>
+                    <SortIcon sx={{ p: 1 }}/>   
+                </IconButton>
+                <YouTubePlayer youTubeId=""/>
             </div>
         </div>)
 }
