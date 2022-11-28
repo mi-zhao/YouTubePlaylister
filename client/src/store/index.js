@@ -263,8 +263,8 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;
-        let userName = auth.user.firstName + " " + auth.user.lastName;
+        let newListName = "Untitled" + store.newListCounter;   
+        let userName = auth.user.firstName + " " + auth.user.lastName; 
         const response = await api.createPlaylist(newListName, [], auth.user.email, userName);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
@@ -287,10 +287,9 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {
-            const response = await api.getPlaylists();
+            const response = await api.getPlaylistPairs();
             if (response.data.success) {
-                let pairsArray = response.data.data;
-                console.log("PAIRSARRAY",pairsArray)
+                let pairsArray = response.data.idNamePairs;
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload: pairsArray

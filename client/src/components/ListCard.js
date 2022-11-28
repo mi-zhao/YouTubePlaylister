@@ -99,9 +99,10 @@ function ListCard(props) {
                     <DeleteIcon style={{fontSize:'24pt'}} />
                 </IconButton>
             </Box> */}
+            {console.log("idnamepair",idNamePair)}
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By: " + idNamePair.ownerName}</Box>
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.createdAt}</Box>
+            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By: " + idNamePair.username}</Box> 
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.timestamp}</Box>
             
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%',p: 3}}>{"Listens: " + idNamePair.listens}</Box>
             <Box sx={{marginLeft:'40%'}}> <IconButton><FaThumbsUp/></IconButton> </Box>

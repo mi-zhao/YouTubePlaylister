@@ -143,9 +143,15 @@ getPlaylistPairs = async (req, res) => {
                     let pairs = [];
                     for (let key in playlists) {
                         let list = playlists[key];
+                        console.log("List", list)
                         let pair = {
                             _id: list._id,
                             name: list.name,
+                            username: list.ownerName,
+                            likes: list.likes,
+                            dislikes: list.dislikes,
+                            listens: list.listens,
+                            timestamp: list.createdAt,
                         };
                         pairs.push(pair);
                     }
@@ -157,6 +163,7 @@ getPlaylistPairs = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getPlaylists = async (req, res) => {
+    console.log("getPlaylists")
     await Playlist.find({}, (err, playlists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
