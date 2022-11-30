@@ -144,6 +144,7 @@ getPlaylistPairs = async (req, res) => {
                     for (let key in playlists) {
                         let list = playlists[key];
                         console.log("List", list)
+                        let createdAt = Date(list.createdAt).split(" ").slice(1,4).join(" ")
                         let pair = {
                             _id: list._id,
                             name: list.name,
@@ -151,7 +152,7 @@ getPlaylistPairs = async (req, res) => {
                             likes: list.likes,
                             dislikes: list.dislikes,
                             listens: list.listens,
-                            timestamp: list.createdAt,
+                            timestamp: createdAt,
                         };
                         pairs.push(pair);
                     }

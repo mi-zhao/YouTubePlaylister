@@ -22,7 +22,7 @@ export default function SplashScreen() {
     return (
         <div id="splash-screen">
             <Typography variant="h6">Welcome to</Typography>
-            <Typography variant="h2" fontWeight="bold" fontStyle="italic" fontSize="h1.fontSize">Playlister</Typography>
+            <Typography variant="h2" fontFamily={'GFS Didot'} fontWeight="bold" fontStyle="italic" fontSize="h1.fontSize">Playlister</Typography>
             <p class="h7text">Create, rate, and share Playlists around the world</p>
 
             <Box sx={{ '& button': { m: 4 } }}>

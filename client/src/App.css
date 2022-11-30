@@ -72,7 +72,7 @@ body {
   width: 100%;
   height: 10%;
   background-color: #FF8E42;
-  display: flex;
+  display: flex; 
   align-items: center;
   justify-content: center;
   font-size: 36pt;
@@ -129,20 +129,6 @@ body {
   z-index: 1;
 }
 
-#list-selector-heading {
-  position: absolute;
-  left: 0%;
-  top: 0%;
-  width: 100%;
-  height: 10%;
-  text-align: center;
-  font-size: 24pt;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 #add-list-button {
   float: left;
 }
@@ -184,7 +170,6 @@ body {
   padding: 20px;
   border-radius: 25px;
   font-weight: bold;
-  height:3cm;
 }
 
 .list-card:aria-disabled,
