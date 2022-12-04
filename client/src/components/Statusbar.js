@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Typography } from '@mui/material'
-
+import AuthContext from '../auth'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add';
 
@@ -12,17 +12,21 @@ import AddIcon from '@mui/icons-material/Add';
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
-    // let text ="";
-    // if (store.currentList)
-    //     text = store.currentList.name;
+    const { auth } = useContext(AuthContext);
+    let text = "";
+    let statusName = "statusbar";
+    
+    if (auth.user !== null) {
+        statusName = "statusbar-visible"
+    }
+    if (store.currentList)
+        text = store.currentList.name;
 
     function handleCreateNewList() {
-        store.createNewList();
+            store.createNewList();
     }
-
     return (
-        <div id="playlist-statusbar">
-            {/* <Typography variant="h4">{text}</Typography> */}
+        <div id="playlister-statusbar" className={statusName}>
             <Fab 
                 color="primary" 
                 aria-label="add"
@@ -33,7 +37,7 @@ function Statusbar() {
                 <AddIcon />
             </Fab>
                 <Typography variant="h3">Your Lists</Typography>
-        </div>
+        </div> 
     );
 }
 

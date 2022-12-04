@@ -11,6 +11,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import EditToolbar from './EditToolbar';
 
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
@@ -76,6 +77,10 @@ export default function AppBanner() {
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
+        // if (store.currentList) {
+        //     editToolbar = <EditToolbar />;
+        // }
+        // <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
     }
     
     function getAccountMenu(loggedIn) {
@@ -92,7 +97,6 @@ export default function AppBanner() {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h2" fontFamily={'GFS Didot'} fontWeight="bold" fontStyle="italic" fontSize='30px'>Playlister</Typography>
-                    <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton id="accountbutton"
                             size="large"

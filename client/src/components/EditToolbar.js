@@ -57,6 +57,13 @@ function EditToolbar() {
                 variant="contained">
                     <CloseIcon />
             </Button>
+
+            <Button>
+                Publish
+            </Button>
+            <Button >
+                Duplicate
+            </Button>
         </div>
     )
 }

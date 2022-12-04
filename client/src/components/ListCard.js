@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,20 +8,32 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import { BsChevronDoubleDown, BsChevronDoubleUp } from 'react-icons/bs';
+import SongCard from './SongCard.js'
+import List from '@mui/material/List';
+import { Button } from '@mui/material';
+import MUIEditSongModal from './MUIEditSongModal';
+import MUIRemoveSongModal from './MUIRemoveSongModal';
+import EditToolbar from './EditToolbar';
 
-/*
-    This is a card in our list of top 5 lists. It lets select
-    a list for editing and it has controls for changing its 
-    name or deleting it.
-    
-    @author McKilla Gorilla
-*/
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
-    const [editPlaylistActive, setEditPlaylistActive] = useState(false);
+    const [expanded, setExpanded] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
+
+    let songModal = "";
+    if (store.isEditSongModalOpen()) {
+        songModal = <MUIEditSongModal />;
+    }
+    else if (store.isRemoveSongModalOpen()) {
+        songModal = <MUIRemoveSongModal />;
+    }
+
+    let editToolbar = "";
+    if (store.currentList) {
+        editToolbar = <EditToolbar />;
+    }
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -50,6 +62,8 @@ function ListCard(props) {
         setEditActive(newActive);
     }
 
+
+
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         let _id = event.target.id;
@@ -70,45 +84,81 @@ function ListCard(props) {
         setText(event.target.value);
     }
 
-    function toggleEditPlaylist(event) {
-        let active = !editPlaylistActive;
-        // if (newActive) {
-        //     store.setIsListNameEditActive();
-        // }
-        setEditPlaylistActive(active);
-    }
+    useEffect(() => {
+        if (store.currentList && store.currentList._id !== idNamePair._id) {
+            setExpanded(false)
+        }
+    });
+
 
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
     }
+
     let cardStatus = false;
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
+    let songCards = <div></div>
+    if (store.currentList) {
+        songCards = 
+        <div id='song-cards'>
+            <List>
+            {
+                store.currentList.songs.map((song, index) => (
+                    <SongCard
+                        id={'playlist-song-' + (index)}
+                        key={'playlist-song-' + (index)}
+                        index={index}
+                        song={song}
+                    />
+                ))  
+            }
+            </List>  
+        </div>
+    }
+
+
+
+    function handlePlayFromBeginning(event, playlistid) {
+        store.updateQueue(playlistid);
+        // store.updateSongInPlayer(playlist.songs[0], 1);
+        // console.log(" queuedSongs,songNumber:", store.queuedSongs, store.songNumber)
+    }
+
     let cardElement =
+        
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
-            className={"list-card unselected-list-card"}
+            className={'list-card unselected-list-card'}
             sx={{p: 1 }}
             style={{ width: '98%', height: '3cm'}}
             onClick={(event) => {
-                if (event.detail == 2) {
-                    handleToggleEdit(event)
+                if (event.detail == 1) {
+                    handlePlayFromBeginning(event, idNamePair._id);
+                }
+                else if (event.detail == 2) {
+                    handleToggleEdit(event);
                 }
             }}
         >
             
-            {/* <Box sx={{ p: 1 }}>
-                <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'24pt'}} />
-                </IconButton>
-            </Box>  */}
+            
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <Box sx={{ position:'flex', fontSize: '9pt', p: 3}}>{"By: " + idNamePair.username}</Box> 
+            <div>
+            <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> 
+             
+            </div>
+                       <Box sx={{ p: 1 }}>
+                            <IconButton onClick={(event) => {
+                                    handleDeleteList(event, idNamePair._id)
+                                }} aria-label='delete'>
+                                <DeleteIcon style={{fontSize:'24pt'}} />
+                            </IconButton>
+                        </Box> 
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.timestamp}</Box>
             
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
@@ -117,17 +167,24 @@ function ListCard(props) {
             <Box sx={{ marginLeft:'10%'}}> <IconButton><FaThumbsDown/></IconButton> </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
             
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> <IconButton onClick={(event) => {toggleEditPlaylist(event)}}><BsChevronDoubleDown/></IconButton> </Box>
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
+                <IconButton onClick={(event) => {
+                    store.closeCurrentList();
+                    event.stopPropagation();
+                    setExpanded(true);
+                    handleLoadList(event, idNamePair._id)
+                }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
     
-    if (editPlaylistActive) {
+    if (expanded) {
         cardElement =
+        <div id='expanded-list-card'>
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             className={"list-card unselected-list-card"}
             sx={{p: 1 }}
-            style={{ width: '98%', height: '10cm'}}
+            style={{ width: '98%', height: '13cm'}}
             onClick={(event) => {
                 if (event.detail == 2) {
                     handleToggleEdit(event)
@@ -135,17 +192,21 @@ function ListCard(props) {
             }}
         >
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <Box sx={{ position:'flex', fontSize: '9pt', p: 3, marginTop:'35%'}}>{"By: " + idNamePair.username}</Box> 
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '45%', p: 3}}>{"Published: " + idNamePair.timestamp}</Box>
-            
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '45%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
-            <Box sx={{ marginLeft:'40%', marginTop:'35%'}}> <IconButton><FaThumbsUp/></IconButton> </Box>
-            <Box sx={{ fontSize: '12pt', p:1, marginTop:'35%'}}>{idNamePair.likes}</Box>
-            <Box sx={{ marginLeft:'10%', marginTop:'35%'}}> <IconButton><FaThumbsDown/></IconButton> </Box>
-            <Box sx={{ fontSize: '12pt', p:1, marginTop:'35%'}}>{idNamePair.dislikes}</Box>
-            
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '45%', marginLeft:'85%', p: 3}}> <IconButton onClick={(event) => {toggleEditPlaylist(event)}}><BsChevronDoubleUp/></IconButton> </Box>
+            <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
+                {songCards}
+            </Box>
+        
+             {editToolbar}
+
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
+                <IconButton 
+                onClick={(event) => {
+                    event.stopPropagation();
+                    setExpanded(false);
+                    store.closeCurrentList();
+                }}><BsChevronDoubleUp/></IconButton> </Box>
         </ListItem>
+        </div>
     }
     if (editActive) {
         cardElement =
@@ -166,6 +227,9 @@ function ListCard(props) {
                 autoFocus
             />
     }
+
+
+
     return (
         cardElement
     );

@@ -4,6 +4,7 @@ import { Box } from '@mui/system';
 import logo from '../music_player.png'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { Link } from 'react-router-dom';
 
 export default function SplashScreen() {
 
@@ -26,12 +27,16 @@ export default function SplashScreen() {
             <p class="h7text">Create, rate, and share Playlists around the world</p>
 
             <Box sx={{ '& button': { m: 4 } }}>
-                <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleCreateAccount}>
-                    Create Account
-                </Button>
-                <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleLogin}>
-                    Login
-                </Button>
+                <Link to="/register/">
+                    <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleCreateAccount}>
+                        Create Account
+                    </Button>
+                </Link>
+                    <Link to="/login/">
+                        <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleLogin}>
+                            Login
+                        </Button>
+                    </Link>
                 <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleGuest}>
                     Continue As Guest
                 </Button>

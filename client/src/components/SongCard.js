@@ -43,7 +43,7 @@ function SongCard(props) {
         }
     }
 
-    let cardClass = "list-card unselected-list-card";
+    let cardClass = "song-card";
     return (
         <div
             key={index}

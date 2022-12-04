@@ -54,7 +54,7 @@ const HomeScreen = () => {
             </List>;
     }
     return (
-        <div id="playlist-selector">
+        <div>
             <div id="list-selector-list">
                 {
                     listCard
@@ -79,7 +79,10 @@ const HomeScreen = () => {
                 <IconButton>
                     <SortIcon sx={{ p: 1 }}/>   
                 </IconButton>
-                <YouTubePlayer youTubeId=""/>
+            </div>
+
+            <div id="youtube-viewer"> 
+                <YouTubePlayer youTubeId={store.songInPlayer} queue={store.queuedSongs}/>
             </div>
         </div>)
 }

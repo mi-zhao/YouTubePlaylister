@@ -8,6 +8,7 @@ const Schema = mongoose.Schema
 */
 const playlistSchema = new Schema(
     {
+        published : {type: Boolean, default: false, required: false},
         name: { type: String, required: true },
         ownerName: {type: String, required: false},
         ownerEmail: { type: String, required: true },
