@@ -27,6 +27,12 @@ function EditToolbar() {
     function handleClose() {
         store.closeCurrentList();
     }
+
+    function handlePublish(event) {
+        store.publishPlaylist();
+        store.closeCurrentList();
+    }   
+
     return (
         <div id="edit-toolbar">
             <Button
@@ -57,8 +63,8 @@ function EditToolbar() {
                 variant="contained">
                     <CloseIcon />
             </Button>
-
-            <Button>
+            {console.log("current list", store.currentList)}
+            <Button onClick={handlePublish}>
                 Publish
             </Button>
             <Button >

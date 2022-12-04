@@ -21,6 +21,8 @@ function YouTubePlayer(props) {
     console.log("eventss", event.target)
     player = event.target;
     console.log("queue", store.queuedSongs)
+
+    // player.cuePlaylist(["cuHDQhDhvPE", "4O0_-1NaWnY"], 0)
     player.cuePlaylist(store.queuedSongs, 0);
     player.stopVideo();
   }

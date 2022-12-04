@@ -21,7 +21,7 @@ console.log("create GlobalStoreContext");
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const GlobalStoreActionType = {
-    CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
+    UPDATE_PLAYLIST: "UPDATE_PLAYLIST",
     CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     CREATE_NEW_LIST: "CREATE_NEW_LIST",
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
@@ -77,11 +77,11 @@ function GlobalStoreContextProvider(props) {
         const { type, payload } = action;
         switch (type) {
             // LIST UPDATE OF ITS NAME
-            case GlobalStoreActionType.CHANGE_LIST_NAME: {
+            case GlobalStoreActionType.UPDATE_PLAYLIST: {
                 return setStore({
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload.idNamePairs,
-                    currentList: store.currentList,
+                    currentList: payload.playlist,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -285,7 +285,7 @@ function GlobalStoreContextProvider(props) {
                             if (response.data.success) {
                                 let pairsArray = response.data.idNamePairs;
                                 storeReducer({
-                                    type: GlobalStoreActionType.CHANGE_LIST_NAME,
+                                    type: GlobalStoreActionType.UPDATE_PLAYLIST,
                                     payload: {
                                         idNamePairs: pairsArray,
                                         playlist: playlist
@@ -602,6 +602,60 @@ function GlobalStoreContextProvider(props) {
         }
         playFromBeginning(id);
     }
+
+    store.publishPlaylist = function() {
+        let id = store.currentList._id
+        async function setPublished(id) {
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                playlist.published = true;
+
+                async function updatePublishedPlaylist(playlist) {
+                    response = await api.updatePlaylistById(playlist._id, playlist);
+                    if (response.data.success) {
+                        async function updateListPairs(playlist) {
+                            response = await api.getPlaylistPairs();
+                            if (response.data.success) {
+                                let idnamepairs = response.data.idNamePairs;
+                                storeReducer({
+                                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                                    payload: playlist
+                                });
+                                store.loadIdNamePairs();
+                                history.push("/");
+                            }
+                        }
+                        updateListPairs(playlist)
+                    }
+                }
+                updatePublishedPlaylist(playlist);
+            }
+        }
+        setPublished(id);
+    }
+
+
+    // async function updateList(playlist) {
+    //     response = await api.updatePlaylistById(playlist._id, playlist);
+    //     if (response.data.success) {
+    //         async function getListPairs(playlist) {
+    //             response = await api.getPlaylistPairs();
+    //             if (response.data.success) {
+    //                 let pairsArray = response.data.idNamePairs;
+    //                 storeReducer({
+    //                     type: GlobalStoreActionType.UPDATE_PLAYLIST,
+    //                     payload: {
+    //                         idNamePairs: pairsArray,
+    //                         playlist: playlist
+    //                     }
+    //                 });
+    //             }
+    //         }
+    //         getListPairs(playlist);
+    //     }
+    // }
+    // updateList(playlist);
 
     return (
         <GlobalStoreContext.Provider value={{

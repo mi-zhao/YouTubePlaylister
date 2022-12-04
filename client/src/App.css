@@ -122,11 +122,6 @@ body {
   margin: 1%;
 }
 
-#expanded-list-card {
-  display: flex;
-  flex-direction: column;
-}
-
 #youtube-viewer {
   background-color: #afafaf;
   font-size: 15pt;

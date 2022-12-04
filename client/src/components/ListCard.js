@@ -129,7 +129,6 @@ function ListCard(props) {
     }
 
     let cardElement =
-        
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
@@ -145,22 +144,51 @@ function ListCard(props) {
                 }
             }}
         >
-            
-            
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <div>
-            <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> 
-             
-            </div>
-                       <Box sx={{ p: 1 }}>
+            <div> <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> </div>
+                       {/* <Box sx={{ p: 1 }}>
                             <IconButton onClick={(event) => {
                                     handleDeleteList(event, idNamePair._id)
                                 }} aria-label='delete'>
                                 <DeleteIcon style={{fontSize:'24pt'}} />
                             </IconButton>
-                        </Box> 
+                        </Box>  */}
+            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
+                <IconButton onClick={(event) => {
+                    store.closeCurrentList();
+                    event.stopPropagation();
+                    setExpanded(true);
+                    handleLoadList(event, idNamePair._id)
+                }}><BsChevronDoubleDown/></IconButton> </Box>
+        </ListItem>
+
+    if (idNamePair.published) {
+        cardElement =
+        <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            className={'list-card selected-list-card'}
+            sx={{p: 1 }}
+            style={{ width: '98%', height: '3cm'}}
+            onClick={(event) => {
+                if (event.detail == 1) {
+                    handlePlayFromBeginning(event, idNamePair._id);
+                }
+                else if (event.detail == 2) {
+                    handleToggleEdit(event);
+                }
+            }}
+        >
+            <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
+            <div> <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> </div>
+                       {/* <Box sx={{ p: 1 }}>
+                            <IconButton onClick={(event) => {
+                                    handleDeleteList(event, idNamePair._id)
+                                }} aria-label='delete'>
+                                <DeleteIcon style={{fontSize:'24pt'}} />
+                            </IconButton>
+                        </Box>  */}
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.timestamp}</Box>
-            
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
             <Box sx={{ marginLeft:'40%'}}> <IconButton><FaThumbsUp/></IconButton> </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
@@ -175,38 +203,69 @@ function ListCard(props) {
                     handleLoadList(event, idNamePair._id)
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
-    
-    if (expanded) {
-        cardElement =
-        <div id='expanded-list-card'>
-        <ListItem
-            id={idNamePair._id}
-            key={idNamePair._id}
-            className={"list-card unselected-list-card"}
-            sx={{p: 1 }}
-            style={{ width: '98%', height: '13cm'}}
-            onClick={(event) => {
-                if (event.detail == 2) {
-                    handleToggleEdit(event)
-                }
-            }}
-        >
-            <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
-                {songCards}
-            </Box>
         
-             {editToolbar}
-
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
-                <IconButton 
+        if (expanded) {
+            cardElement =
+            <ListItem
+                id={idNamePair._id}
+                key={idNamePair._id}
+                className={"list-card selected-list-card"}
+                sx={{p: 1 }}
+                style={{ width: '98%', height: '13cm'}}
                 onClick={(event) => {
-                    event.stopPropagation();
-                    setExpanded(false);
-                    store.closeCurrentList();
-                }}><BsChevronDoubleUp/></IconButton> </Box>
-        </ListItem>
-        </div>
+                    if (event.detail == 2) {
+                        handleToggleEdit(event)
+                    }
+                }}
+            >
+                <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
+                <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
+                    {songCards}
+                </Box>
+            
+                {editToolbar}
+
+                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
+                    <IconButton 
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setExpanded(false);
+                        store.closeCurrentList();
+                    }}><BsChevronDoubleUp/></IconButton> </Box>
+            </ListItem>
+        }
+    }
+    else {
+        if (expanded && store.currentList) {
+            cardElement =
+            <ListItem
+                id={idNamePair._id}
+                key={idNamePair._id}
+                className={"list-card unselected-list-card"}
+                sx={{p: 1 }}
+                style={{ width: '98%', height: '13cm'}}
+                onClick={(event) => {
+                    if (event.detail == 2) {
+                        handleToggleEdit(event)
+                    }
+                }}
+            >
+                <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
+                <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
+                    {songCards}
+                </Box>
+            
+                    {editToolbar}
+    
+                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
+                    <IconButton 
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        setExpanded(false);
+                        store.closeCurrentList();
+                    }}><BsChevronDoubleUp/></IconButton> </Box>
+            </ListItem>
+        }
     }
     if (editActive) {
         cardElement =
