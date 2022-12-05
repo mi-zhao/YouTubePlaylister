@@ -164,6 +164,13 @@ body {
   border-radius: 25px;
 }
 
+#empty-player {
+  display: flex;
+  background-color: #c4dcff;
+  height: 255px;
+  width: 450px;
+}
+
 #youtube-player{
   display:flex;
 }

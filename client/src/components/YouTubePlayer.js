@@ -17,6 +17,8 @@ function YouTubePlayer(props) {
 
   let player = "";
 
+
+
   const onPlayerReady = (event) => {
     player = event.target;
     console.log("player", player)
@@ -58,7 +60,7 @@ function YouTubePlayer(props) {
       </div>
         
       <div>
-        <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady} />
+        {store.songInPlayer ? <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady}/> : <div id="empty-player"></div>}
 
         <div id="youtube-text">
           <div>Playlist: {store.currentList ? store.currentList.name : 'Untitled'} </div>

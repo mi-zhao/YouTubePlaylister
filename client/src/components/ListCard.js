@@ -15,6 +15,10 @@ import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import EditToolbar from './EditToolbar';
 import Grid from '@mui/material/Grid';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
@@ -40,6 +44,15 @@ function ListCard(props) {
         }
         return edittoolbar;
     }
+
+    let thumbsUpIcon = <ThumbUpOffAltIcon/>;
+    if (liked) {
+        thumbsUpIcon = <ThumbUpIcon/>
+    }
+    let thumbsDownIcon = <ThumbDownOffAltIcon/>;
+    if (disliked) {
+        thumbsDownIcon = <ThumbDownIcon/>
+    } 
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -131,31 +144,49 @@ function ListCard(props) {
     function handlePlayFromBeginning(event, playlistId) {
         store.updateQueue(playlistId);
     }
-
+    
     function handleLikes(event, playlistId) {
+        
         event.stopPropagation();
+        {console.log("likedalready", liked)}
+    {console.log("disliked", disliked)}
         let newlike = !liked
-        if (newlike) {
-            // Like a playlist
-            store.updateLikesPlaylist(playlistId, true, true);
+        let newdislike = !disliked
+        if (!newlike && newdislike) {
+            console.log("Already liked playlist, unlike it");
+            store.updateLikedPlaylist(playlistId, false, false);
         }
-        else {
-            // Undo a dislike
-            store.updateLikesPlaylist(playlistId, true, false);
+        if (newlike && newdislike) {
+            console.log("Never liked or disliked, like playlist");
+            store.updateLikedPlaylist(playlistId, true, false);
+        }
+        else if (newlike && !newdislike) {
+            console.log("Already disliked playlist but want to like instead");
+            store.updateLikedPlaylist(playlistId, true, true);
+            setDisliked(newdislike)
         }
         setLiked(newlike)
     }
 
     function handleDislikes(event, playlistId) {
         event.stopPropagation();
+        {console.log("likedalready", liked)}
+    {console.log("disliked", disliked)}
+        let newlike = !liked
         let newdislike = !disliked
-        if (newdislike) {
-            // Dislike a playlist
-            store.updateLikesPlaylist(playlistId, false, true);
+        if (!newdislike && newlike) {
+            console.log("Already disliked playlist, undo dislike");
+            store.updateDislikedPlaylist(playlistId, false, false);
         }
-        else {
-            // Undo a dislike
-            store.updateLikesPlaylist(playlistId, false, false);
+        if (newlike && newdislike) {
+            console.log("Never liked or disliked, dislike playlist");
+            store.updateDislikedPlaylist(playlistId, true, false);
+        }
+        else if (!newlike && newdislike) {
+            
+            console.log("Already liked playlist but want to dislike instead")
+            store.updateDislikedPlaylist(playlistId, true, true);
+            setLiked(newlike)
         }
         setDisliked(newdislike)
     }
@@ -219,13 +250,15 @@ function ListCard(props) {
             <Box sx={{ marginLeft:'40%'}}> 
                 <IconButton 
                     onClick={(event) => {handleLikes(event, idNamePair._id)}}>
-                <FaThumbsUp/></IconButton> 
+                    {thumbsUpIcon}
+                </IconButton> 
             </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
             <Box sx={{ marginLeft:'10%'}}> 
                 <IconButton
                     onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
-                <FaThumbsDown/></IconButton> 
+                    {thumbsDownIcon}
+                </IconButton> 
             </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 

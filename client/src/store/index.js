@@ -60,7 +60,7 @@ function GlobalStoreContextProvider(props) {
         listNameActive: false,
         listIdMarkedForDeletion: null,
         listMarkedForDeletion: null,
-        songInPlayer: "XAXwmMu8otM",
+        songInPlayer: null,
         queuedSongs: null,
         songNumber: 0,
         songNamePairs: [{
@@ -685,25 +685,18 @@ function GlobalStoreContextProvider(props) {
         setPublished(id);
     }
 
-    store.updateLikesPlaylist = function(id, isLike, increment) {
+    store.updateLikedPlaylist = function(id, isLike, alreadyLikedOrDisliked) {
         async function setLikedPlaylist(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 if (isLike) {
-                    if (increment) {
-                        playlist.likes++
-                    }
-                    else {
-                        playlist.likes--
-                    }
-                } else {
-                    if (increment) {
-                        playlist.dislikes++
-                    }
-                    else {
+                    if (alreadyLikedOrDisliked) {
                         playlist.dislikes--
                     }
+                    playlist.likes++
+                } else {
+                    playlist.likes--
                 } 
                 
                 async function updateLikes(playlist) {
@@ -725,6 +718,41 @@ function GlobalStoreContextProvider(props) {
             }
         }
         setLikedPlaylist(id)
+    }
+
+    store.updateDislikedPlaylist = function(id, isDislike, alreadyLikedOrDisliked) {
+        async function setDislikedPlaylist(id) {
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                if (isDislike) {
+                    if (alreadyLikedOrDisliked) {
+                        playlist.likes--
+                    }
+                    playlist.dislikes++
+                } else {
+                    playlist.dislikes--
+                } 
+                
+                async function updateDislikes(playlist) {
+                    response = await api.updatePlaylistById(playlist._id, playlist);
+                    if (response.data.success) {
+                        response = await api.getPlaylistPairs();
+                        if (response.data.success) {
+                            storeReducer({
+                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                                payload: {
+                                    idNamePairs: response.data.idNamePairs,
+                                    playlist: playlist
+                                }
+                            });
+                        }
+                    }
+                }
+                updateDislikes(playlist);
+            }
+        }
+        setDislikedPlaylist(id)
     }
 
     return (
