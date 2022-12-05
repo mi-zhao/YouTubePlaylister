@@ -63,21 +63,20 @@ function EditToolbar(props) {
             variant="contained">
                 <CloseIcon />
         </Button>
+        
         <Button onClick={handlePublish}>
-            Publish
-        </Button>
-        <Button>
-            Duplicate
-        </Button>
-    </div>
+                    Publish
+                </Button>
+                <Button>
+                    Duplicate
+                </Button>
+        </div>
 
     if (isPublished) {
         playlistButtons = 
-        <div>
             <Button>
                 Duplicate
             </Button>
-        </div>
     }
 
     return (

@@ -14,6 +14,7 @@ import { Button } from '@mui/material';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import EditToolbar from './EditToolbar';
+import Grid from '@mui/material/Grid';
 
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
@@ -33,7 +34,7 @@ function ListCard(props) {
     let edittoolbar = "";
     const editToolbar = (isPublished) => {
         if (store.currentList) {
-            edittoolbar = <EditToolbar isPublished={isPublished}/>;
+            edittoolbar = <EditToolbar isPublished={isPublished}/>
         }
         return edittoolbar;
     }
@@ -225,65 +226,117 @@ function ListCard(props) {
         
         if (expanded && store.currentList) {
             cardElement =
-            <ListItem
-                id={idNamePair._id}
-                key={idNamePair._id}
-                className={"list-card selected-list-card"}
-                sx={{p: 1 }}
-                style={{ width: '98%', height: '13cm'}}
-                onClick={(event) => {
-                    if (event.detail == 2) {
-                        handleToggleEdit(event)
-                    }
-                }}
-            >
-                <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-                <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
-                    {songCards}
-                </Box>
-            
-                {editToolbar(store.currentList.published)}
+            // <div className='published-list'>   
+            //     <ListItem
+            //         id={idNamePair._id}
+            //         key={idNamePair._id}
+            //         className={"list-card selected-list-card"}
+            //         sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
+            //         style={{ width: '98%', height: '13cm'}}
+            //         onClick={(event) => {
+            //             if (event.detail == 2) {
+            //                 handleToggleEdit(event)
+            //             }
+            //         }}>
+                        
+            //         <div className='list-names'>
+            //             <Box sx={{}}>{idNamePair.name}</Box>
+            //             <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
+            //         </div>
+                                
+            //         <div className='list-songs'>   {songCards}      </div>
+                    
+            //         <div className='edit-toolbar'>
+            //             {editToolbar(store.currentList.published)}
 
-                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
-                    <IconButton 
+            //             <Box sx={{}}> 
+            //                 <IconButton 
+            //                 onClick={(event) => {
+            //                     event.stopPropagation();
+            //                     setExpanded(false);
+            //                     store.closeCurrentList();
+            //                 }}><BsChevronDoubleUp/></IconButton>
+            //             </Box>
+            //         </div>
+                    
+            //     </ListItem>
+            // </div>
+
+            <div className='unpublished-list'>   
+                <ListItem
+                    id={idNamePair._id}
+                    key={idNamePair._id}
+                    className={"list-card selected-list-card"}
+                    sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
+                    style={{ width: '98%', height: '13cm'}}
                     onClick={(event) => {
-                        event.stopPropagation();
-                        setExpanded(false);
-                        store.closeCurrentList();
-                    }}><BsChevronDoubleUp/></IconButton> </Box>
-            </ListItem>
+                        if (event.detail == 2) {
+                            handleToggleEdit(event)
+                        }
+                    }}>
+                        
+                    <div className='list-names'>
+                        <Box sx={{}}>{idNamePair.name}</Box>
+                        <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
+                    </div>
+                                
+                    <div className='list-songs'>   {songCards}      </div>
+                    
+                    <div className='edit-toolbar'>
+                        {editToolbar(store.currentList.published)}
+
+                        <Box sx={{}}> 
+                            <IconButton 
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                setExpanded(false);
+                                store.closeCurrentList();
+                            }}><BsChevronDoubleUp/></IconButton>
+                        </Box>
+                    </div>
+
+                </ListItem>
+            </div>
         }
     }
     else {
         if (expanded && store.currentList) {
             cardElement =
-            <ListItem
-                id={idNamePair._id}
-                key={idNamePair._id}
-                className={"list-card unselected-list-card"}
-                sx={{p: 1 }}
-                style={{ width: '98%', height: '13cm'}}
-                onClick={(event) => {
-                    if (event.detail == 2) {
-                        handleToggleEdit(event)
-                    }
-                }}
-            >
-                <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-                <Box maxWidth sx={{position: 'absolute', width:'80%', height: '65%', overflow:'auto', bottom:'7em'}}>
-                    {songCards}
-                </Box>
-            
-                {editToolbar(store.currentList.published)}
-    
-                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
-                    <IconButton 
+            <div className='unpublished-list'>   
+                <ListItem
+                    id={idNamePair._id}
+                    key={idNamePair._id}
+                    className={"list-card unselected-list-card"}
+                    sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
+                    style={{ width: '98%', height: '13cm'}}
                     onClick={(event) => {
-                        event.stopPropagation();
-                        setExpanded(false);
-                        store.closeCurrentList();
-                    }}><BsChevronDoubleUp/></IconButton> </Box>
-            </ListItem>
+                        if (event.detail == 2) {
+                            handleToggleEdit(event)
+                        }
+                    }}>
+                        
+                    <div className='list-names'>
+                        <Box sx={{}}>{idNamePair.name}</Box>
+                        <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
+                    </div>
+                                
+                    <div className='list-songs'>   {songCards}      </div>
+                    
+                    <div className='edit-toolbar'>
+                        {editToolbar(store.currentList.published)}
+
+                        <Box sx={{}}> 
+                            <IconButton 
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                setExpanded(false);
+                                store.closeCurrentList();
+                            }}><BsChevronDoubleUp/></IconButton>
+                        </Box>
+                    </div>
+
+                </ListItem>
+            </div>
         }
     }
     if (editActive) {
