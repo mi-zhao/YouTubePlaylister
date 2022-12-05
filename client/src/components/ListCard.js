@@ -177,14 +177,8 @@ function ListCard(props) {
             }}
         >
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
-            <div> <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> </div>
-                       {/* <Box sx={{ p: 1 }}>
-                            <IconButton onClick={(event) => {
-                                    handleDeleteList(event, idNamePair._id)
-                                }} aria-label='delete'>
-                                <DeleteIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
-                        </Box>  */}
+            <div> <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.userName}</Box> </div>
+                    
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
                 <IconButton onClick={(event) => {
                     store.closeCurrentList();
@@ -234,7 +228,6 @@ function ListCard(props) {
                 <FaThumbsDown/></IconButton> 
             </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
-            
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
                 <IconButton onClick={(event) => {
                     store.closeCurrentList();
@@ -269,13 +262,15 @@ function ListCard(props) {
                         <div className='edit-toolbar'>
                             {editToolbar(store.currentList.published)}
 
-                            <Box sx={{}}> 
-                                <IconButton 
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    setExpanded(false);
-                                    store.closeCurrentList();
-                                }}><BsChevronDoubleUp/></IconButton>
+                            <IconButton onClick={(event) => {
+                                handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
+                            </IconButton>
+
+                            <Box sx={{}}> <IconButton onClick={(event) => {
+                                event.stopPropagation();
+                                setExpanded(false);
+                                store.closeCurrentList();
+                            }}><BsChevronDoubleUp/></IconButton>
                             </Box>
                         </div>
 
@@ -308,6 +303,10 @@ function ListCard(props) {
                     
                     <div className='edit-toolbar'>
                         {editToolbar(store.currentList.published)}
+
+                        <IconButton onClick={(event) => {
+                            handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
+                        </IconButton>
 
                         <Box sx={{}}> 
                             <IconButton 

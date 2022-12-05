@@ -24,6 +24,7 @@ const api = axios.create({
 // CUSTOM FILTERS FOR QUERIES
 export const createPlaylist = (newListName, newSongs, userEmail, userName) => {
     return api.post(`/playlist/`, {
+        // SPECIFY THE PAYLOAD
         name: newListName,
         songs: newSongs,
         ownerEmail: userEmail,

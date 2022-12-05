@@ -16,16 +16,19 @@ function EditToolbar(props) {
     const { store } = useContext(GlobalStoreContext);
     const { isPublished } = props;
 
-    function handleAddNewSong() {
+    function handleAddNewSong(event) {
+        event.stopPropagation();
         store.addNewSong();
     }
-    function handleUndo() {
+    function handleUndo(event) {
+        event.stopPropagation();
         store.undo();
     }
-    function handleRedo() {
+    function handleRedo(event) {
+        event.stopPropagation();
         store.redo();
     }
-    function handleClose() {
+    function handleClose(event) {
         store.closeCurrentList();
     }
 

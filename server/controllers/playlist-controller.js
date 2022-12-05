@@ -37,7 +37,7 @@ createPlaylist = (req, res) => {
             })
         }
 
-        console.log("playlist is now:", playlist)
+        console.log("playlist is now", playlist)
 
         user.playlists.push(playlist._id);
         user
