@@ -21,6 +21,8 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [text, setText] = useState("");
+    const [liked, setLiked] = useState(false);
+    const [disliked, setDisliked] = useState(false);
     const { idNamePair, selected } = props;
 
     let songModal = "";
@@ -132,12 +134,30 @@ function ListCard(props) {
 
     function handleLikes(event, playlistId) {
         event.stopPropagation();
-        store.updateLikesPlaylist(playlistId, true);
+        let newlike = !liked
+        if (newlike) {
+            // Like a playlist
+            store.updateLikesPlaylist(playlistId, true, true);
+        }
+        else {
+            // Undo a dislike
+            store.updateLikesPlaylist(playlistId, true, false);
+        }
+        setLiked(newlike)
     }
 
     function handleDislikes(event, playlistId) {
         event.stopPropagation();
-        store.updateLikesPlaylist(playlistId, false);
+        let newdislike = !disliked
+        if (newdislike) {
+            // Dislike a playlist
+            store.updateLikesPlaylist(playlistId, false, true);
+        }
+        else {
+            // Undo a dislike
+            store.updateLikesPlaylist(playlistId, false, false);
+        }
+        setDisliked(newdislike)
     }
 
     let cardElement =

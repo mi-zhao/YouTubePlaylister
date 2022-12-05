@@ -61,7 +61,7 @@ function YouTubePlayer(props) {
         <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady} />
 
         <div id="youtube-text">
-          <div>Playlist: {store.currentList ? store.currentList.name : 'cat playlist'} </div>
+          <div>Playlist: {store.currentList ? store.currentList.name : 'Untitled'} </div>
           <div>Song #: {store.songNumber + 1} </div>
           <div>Title: {currentSong.title} </div>
           <div>Artist: {currentSong.artist} </div>

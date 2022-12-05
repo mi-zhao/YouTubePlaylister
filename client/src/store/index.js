@@ -685,15 +685,25 @@ function GlobalStoreContextProvider(props) {
         setPublished(id);
     }
 
-    store.updateLikesPlaylist = function(id, isLike) {
+    store.updateLikesPlaylist = function(id, isLike, increment) {
         async function setLikedPlaylist(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 if (isLike) {
-                    playlist.likes++
+                    if (increment) {
+                        playlist.likes++
+                    }
+                    else {
+                        playlist.likes--
+                    }
                 } else {
-                    playlist.dislikes++
+                    if (increment) {
+                        playlist.dislikes++
+                    }
+                    else {
+                        playlist.dislikes--
+                    }
                 } 
                 
                 async function updateLikes(playlist) {
