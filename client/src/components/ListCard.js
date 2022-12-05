@@ -30,9 +30,12 @@ function ListCard(props) {
         songModal = <MUIRemoveSongModal />;
     }
 
-    let editToolbar = "";
-    if (store.currentList) {
-        editToolbar = <EditToolbar />;
+    let edittoolbar = "";
+    const editToolbar = (isPublished) => {
+        if (store.currentList) {
+            edittoolbar = <EditToolbar isPublished={isPublished}/>;
+        }
+        return edittoolbar;
     }
 
     function handleLoadList(event, id) {
@@ -122,10 +125,18 @@ function ListCard(props) {
 
 
 
-    function handlePlayFromBeginning(event, playlistid) {
-        store.updateQueue(playlistid);
-        // store.updateSongInPlayer(playlist.songs[0], 1);
-        // console.log(" queuedSongs,songNumber:", store.queuedSongs, store.songNumber)
+    function handlePlayFromBeginning(event, playlistId) {
+        store.updateQueue(playlistId);
+    }
+
+    function handleLikes(event, playlistId) {
+        event.stopPropagation();
+        store.updateLikesPlaylist(playlistId, true);
+    }
+
+    function handleDislikes(event, playlistId) {
+        event.stopPropagation();
+        store.updateLikesPlaylist(playlistId, false);
     }
 
     let cardElement =
@@ -190,9 +201,17 @@ function ListCard(props) {
                         </Box>  */}
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + idNamePair.timestamp}</Box>
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
-            <Box sx={{ marginLeft:'40%'}}> <IconButton><FaThumbsUp/></IconButton> </Box>
+            <Box sx={{ marginLeft:'40%'}}> 
+                <IconButton 
+                    onClick={(event) => {handleLikes(event, idNamePair._id)}}>
+                <FaThumbsUp/></IconButton> 
+            </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
-            <Box sx={{ marginLeft:'10%'}}> <IconButton><FaThumbsDown/></IconButton> </Box>
+            <Box sx={{ marginLeft:'10%'}}> 
+                <IconButton
+                    onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
+                <FaThumbsDown/></IconButton> 
+            </Box>
             <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
             
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
@@ -204,7 +223,7 @@ function ListCard(props) {
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
         
-        if (expanded) {
+        if (expanded && store.currentList) {
             cardElement =
             <ListItem
                 id={idNamePair._id}
@@ -223,7 +242,7 @@ function ListCard(props) {
                     {songCards}
                 </Box>
             
-                {editToolbar}
+                {editToolbar(store.currentList.published)}
 
                 <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
                     <IconButton 
@@ -255,7 +274,7 @@ function ListCard(props) {
                     {songCards}
                 </Box>
             
-                    {editToolbar}
+                {editToolbar(store.currentList.published)}
     
                 <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '60%', marginLeft:'85%', p: 3}}> 
                     <IconButton 

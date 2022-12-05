@@ -16,15 +16,11 @@ function YouTubePlayer(props) {
   const { youTubeId } = props;
 
   let player = "";
-  const onPlayerReady = (event) => {
-    // access to player in all event handlers via event.target
-    console.log("eventss", event.target)
-    player = event.target;
-    console.log("queue", store.queuedSongs)
 
-    // player.cuePlaylist(["cuHDQhDhvPE", "4O0_-1NaWnY"], 0)
-    player.cuePlaylist(store.queuedSongs, 0);
-    player.stopVideo();
+  const onPlayerReady = (event) => {
+    player = event.target;
+    console.log("player", player)
+    player.loadVideoById(store.songInPlayer);
   }
 
   const pauseVideo = (event) => {
@@ -36,11 +32,11 @@ function YouTubePlayer(props) {
   }
 
   const nextSong = (event) => {
-    player.nextVideo();
+    store.playNextOrPrevSong(true);
   }
 
   const previousSong = (event) => {
-    player.previousVideo();
+    store.playNextOrPrevSong(false);
   }
 
   const opts = {
