@@ -48,7 +48,9 @@ function YouTubePlayer(props) {
     },
   };
 
-  return( 
+  let currentSong = store.songNamePairs[store.songNumber];
+
+  return ( 
     <div>
       <div>
         <Button variant="contained" sx={{ }}>Player</Button>
@@ -59,10 +61,10 @@ function YouTubePlayer(props) {
         <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady} />
 
         <div id="youtube-text">
-          <div>Playlist: </div>
-          <div>Song #: </div>
-          <div>Title: </div>
-          <div>Artist: </div>
+          <div>Playlist: {store.currentList ? store.currentList.name : 'cat playlist'} </div>
+          <div>Song #: {store.songNumber + 1} </div>
+          <div>Title: {currentSong.title} </div>
+          <div>Artist: {currentSong.artist} </div>
         </div>
 
         <div id="youtube-player-buttons">

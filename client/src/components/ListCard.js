@@ -226,77 +226,41 @@ function ListCard(props) {
         
         if (expanded && store.currentList) {
             cardElement =
-            // <div className='published-list'>   
-            //     <ListItem
-            //         id={idNamePair._id}
-            //         key={idNamePair._id}
-            //         className={"list-card selected-list-card"}
-            //         sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
-            //         style={{ width: '98%', height: '13cm'}}
-            //         onClick={(event) => {
-            //             if (event.detail == 2) {
-            //                 handleToggleEdit(event)
-            //             }
-            //         }}>
+                <div className='unpublished-list'>   
+                    <ListItem
+                        id={idNamePair._id}
+                        key={idNamePair._id}
+                        className={"list-card selected-list-card"}
+                        sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
+                        style={{ width: '98%', height: '13cm'}}
+                        onClick={(event) => {
+                            if (event.detail == 2) {
+                                handleToggleEdit(event)
+                            }
+                        }}>
+                            
+                        <div className='list-names'>
+                            <Box sx={{}}>{idNamePair.name}</Box>
+                            <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
+                        </div>
+                                    
+                        <div className='list-songs'>   {songCards}      </div>
                         
-            //         <div className='list-names'>
-            //             <Box sx={{}}>{idNamePair.name}</Box>
-            //             <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
-            //         </div>
-                                
-            //         <div className='list-songs'>   {songCards}      </div>
-                    
-            //         <div className='edit-toolbar'>
-            //             {editToolbar(store.currentList.published)}
+                        <div className='edit-toolbar'>
+                            {editToolbar(store.currentList.published)}
 
-            //             <Box sx={{}}> 
-            //                 <IconButton 
-            //                 onClick={(event) => {
-            //                     event.stopPropagation();
-            //                     setExpanded(false);
-            //                     store.closeCurrentList();
-            //                 }}><BsChevronDoubleUp/></IconButton>
-            //             </Box>
-            //         </div>
-                    
-            //     </ListItem>
-            // </div>
+                            <Box sx={{}}> 
+                                <IconButton 
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    setExpanded(false);
+                                    store.closeCurrentList();
+                                }}><BsChevronDoubleUp/></IconButton>
+                            </Box>
+                        </div>
 
-            <div className='unpublished-list'>   
-                <ListItem
-                    id={idNamePair._id}
-                    key={idNamePair._id}
-                    className={"list-card selected-list-card"}
-                    sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
-                    style={{ width: '98%', height: '13cm'}}
-                    onClick={(event) => {
-                        if (event.detail == 2) {
-                            handleToggleEdit(event)
-                        }
-                    }}>
-                        
-                    <div className='list-names'>
-                        <Box sx={{}}>{idNamePair.name}</Box>
-                        <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
-                    </div>
-                                
-                    <div className='list-songs'>   {songCards}      </div>
-                    
-                    <div className='edit-toolbar'>
-                        {editToolbar(store.currentList.published)}
-
-                        <Box sx={{}}> 
-                            <IconButton 
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                setExpanded(false);
-                                store.closeCurrentList();
-                            }}><BsChevronDoubleUp/></IconButton>
-                        </Box>
-                    </div>
-
-                </ListItem>
-            </div>
+                    </ListItem>
+                </div>
         }
     }
     else {

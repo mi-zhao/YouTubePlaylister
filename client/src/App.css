@@ -154,13 +154,14 @@ body {
 }
 
 #youtube-viewer {
+  display: flex;
+  flex-direction: column;
+  float:right;
+  margin-right: 5%;
   background-color: #afafaf;
   font-size: 15pt;
   height:42ch;
   border-radius: 25px;
-  display: flex;
-  flex-direction: column;
-  float:right;
 }
 
 #youtube-player{
