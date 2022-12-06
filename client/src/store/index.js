@@ -380,9 +380,8 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + store.newListCounter;   
-        let userName = auth.user.firstName + " " + auth.user.lastName; 
-        const response = await api.createPlaylist(newListName, [], auth.user.email, userName);
+        let newListName = "Untitled" + store.newListCounter;
+        const response = await api.createPlaylist(newListName, [], auth.user.email, auth.user.username);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -393,7 +392,6 @@ function GlobalStoreContextProvider(props) {
             });
             store.loadIdNamePairs();
             history.push("/");
-            // history.push("/playlist/" + newList._id);
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -815,7 +813,7 @@ function GlobalStoreContextProvider(props) {
         setDislikedPlaylist(id)
     }
 
-    store.setCommentView = function(isCommentView) {
+    store.setCommentView = function (isCommentView) {
         if (isCommentView) {
             storeReducer({
                 type: GlobalStoreActionType.SET_PLAYER_VIEW,
@@ -827,6 +825,36 @@ function GlobalStoreContextProvider(props) {
                 payload: false
             });
         }
+    }
+
+    store.postComment = function() {
+        console.log("get user", store.user)
+        // let id = store.currentList._id
+        // async function setComment(id) {
+        //     let response = await api.getPlaylistById(id);
+        //     if (response.data.success) {
+        //         let playlist = response.data.playlist;
+        //         // playlist.comments.add({username: eeee, comment: eeeeee})
+
+        //         async function updatePlaylist(playlist) {
+        //             response = await api.updatePlaylistById(playlist._id, playlist);
+        //             if (response.data.success) {
+        //                 response = await api.getPlaylistPairs();
+        //                 if (response.data.success){
+        //                     storeReducer({
+        //                         type: GlobalStoreActionType.UPDATE_PLAYLIST,
+        //                         payload: {
+        //                             idNamePairs: response.data.idNamePairs,
+        //                             playlist: playlist
+        //                         }
+        //                     });
+        //                 }
+        //             }
+        //         }
+        //         updatePlaylist(playlist);
+        //     }
+        // }
+        // setComment(id);
     }
 
     return (

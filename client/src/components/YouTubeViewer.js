@@ -24,8 +24,6 @@ function YouTubeViewer(props) {
     const handleComments = () => {
         store.setCommentView(true);
     }
-
-    // {console.log("PLAYER", view)}
   
     return ( 
         <div id="youtube-viewer"> 

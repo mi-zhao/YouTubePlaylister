@@ -23,19 +23,27 @@ function YouTubePlayer(props) {
   }
 
   const pauseVideo = (event) => {
-    player.pauseVideo();
+    if (store.currentList) {
+      player.pauseVideo();
+    }
   }
 
   const playVideo = (event) => {
-    player.playVideo();
+    if (store.currentList) {
+      player.playVideo();
+    }
   }
 
   const nextSong = (event) => {
-    store.playNextOrPrevSong(true);
+    if (store.currentList) {
+      store.playNextOrPrevSong(true);
+    }
   }
 
   const previousSong = (event) => {
-    store.playNextOrPrevSong(false);
+    if (store.currentList) {
+      store.playNextOrPrevSong(false);
+    }
   }
 
   const opts = {
