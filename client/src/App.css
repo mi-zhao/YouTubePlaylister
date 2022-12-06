@@ -137,7 +137,11 @@ body {
   z-index: 2;
 }
 
-#accountbutton {
+#account-button {
+  position: absolute;
+  right: 0;
+  top: 10px;
+  margin-right: 10px;
   z-index: 1;
 }
 
@@ -153,6 +157,16 @@ body {
   margin: 1%;
 }
 
+#comments-viewer {
+  display: flex;
+  flex-direction: column;
+  flex:1;
+}
+
+#comment-buttons {
+  margin-top: auto;
+}
+
 #youtube-viewer {
   display: flex;
   flex-direction: column;
@@ -161,28 +175,40 @@ body {
   background-color: #afafaf;
   font-size: 15pt;
   height:42ch;
+  width: 390px;
   border-radius: 25px;
+  z-index: 0;
+}
+
+#player-workspace {
+  display: flex; 
+  flex-direction:column; 
+  flex:1;
+  height:38ch;
 }
 
 #empty-player {
   display: flex;
   background-color: #c4dcff;
-  height: 255px;
-  width: 450px;
+  height: 200px;
+  width: 390px;
 }
 
 #youtube-player{
   display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 #youtube-player-buttons {
-  display: flex;
   background-color: #c4dcff;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
   border-radius: 15px;
-  width: 60%;
-  margin-left: 20%;
-  height: 40px;
-  justify-content: center;
+  width: 50%;
+  margin-top:auto;
 }
 
 #youtube-text {

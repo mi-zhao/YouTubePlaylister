@@ -139,9 +139,8 @@ function ListCard(props) {
         </div>
     }
 
-
-
     function handlePlayFromBeginning(event, playlistId) {
+        // store.updateListens(id);
         store.updateQueue(playlistId);
     }
     

@@ -98,7 +98,7 @@ export default function AppBanner() {
                 <Toolbar>
                     <Typography variant="h2" fontFamily={'GFS Didot'} fontWeight="bold" fontStyle="italic" fontSize='30px'>Playlister</Typography>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton id="accountbutton"
+                        <IconButton id="account-button"
                             size="large"
                             edge="end"
                             aria-label="account of current user"

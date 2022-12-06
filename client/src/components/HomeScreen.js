@@ -22,6 +22,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import YouTubePlayer from './YouTubePlayer';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
+import YouTubeViewer from './YouTubeViewer';
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -92,9 +93,9 @@ const HomeScreen = () => {
                 </IconButton>
             </div>
 
-            <div id="youtube-viewer"> 
-                <YouTubePlayer youTubeId={store.songInPlayer}/>
-            </div>
+            {/* <div id="youtube-viewer">  */}
+                <YouTubeViewer youTubeId={store.songInPlayer}/>
+            {/* </div> */}
             {modalJSX}
         </div>)
 }

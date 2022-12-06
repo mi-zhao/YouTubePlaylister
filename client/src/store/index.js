@@ -34,6 +34,7 @@ export const GlobalStoreActionType = {
     SET_QUEUE: "SET_QUEUE",
     EDITING_PLAYLIST: "EDITING_PLAYLIST",
     SET_SONG_TO_PLAY: "SET_SONG_TO_PLAY",
+    SET_PLAYER_VIEW: "SET_PLAYER_VIEW",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -64,10 +65,11 @@ function GlobalStoreContextProvider(props) {
         queuedSongs: null,
         songNumber: 0,
         songNamePairs: [{
-            title: 'cute cat is saying something to me',
-            artist: 'Robin Seplut',
-            youTubeId: 'XAXwmMu8otM',
-        }]
+            title: '',
+            artist: '',
+            youTubeId: '',
+        }],
+        commentsView: true,
     });
     const history = useHistory();
 
@@ -97,7 +99,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -115,7 +118,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 })
             }
             // CREATE A NEW LIST
@@ -133,7 +137,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -151,7 +156,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -159,7 +165,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.DELETE_LIST,
                     idNamePairs: store.idNamePairs,
-                    currentList: null,
+                    currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -169,7 +175,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             // UPDATE A LIST
@@ -187,7 +194,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             // START EDITING A LIST NAME
@@ -205,7 +213,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             // 
@@ -223,7 +232,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -240,7 +250,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -257,7 +268,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: store.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: store.songNumber,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             case GlobalStoreActionType.SET_QUEUE: {
@@ -274,7 +286,8 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: payload.songInPlayer,
                     queuedSongs: payload.queue,
                     songNumber: payload.songNumberPlaying,
-                    songNamePairs: payload.songNamePairs
+                    songNamePairs: payload.songNamePairs,
+                    commentsView: store.player,
                 });
             }
             case GlobalStoreActionType.SET_SONG_TO_PLAY: {
@@ -291,7 +304,26 @@ function GlobalStoreContextProvider(props) {
                     songInPlayer: payload.songInPlayer,
                     queuedSongs: store.queuedSongs,
                     songNumber: payload.songIndex,
-                    songNamePairs: store.songNamePairs
+                    songNamePairs: store.songNamePairs,
+                    commentsView: store.player,
+                });
+            }
+            case GlobalStoreActionType.SET_PLAYER_VIEW: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: store.currentSongIndex,
+                    currentSong: store.currentSong,
+                    newListCounter: store.newListCounter,
+                    listNameActive: store.listNameActive,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    songInPlayer: store.songInPlayer,
+                    queuedSongs: store.queuedSongs,
+                    songNumber: store.songNumber,
+                    songNamePairs: store.songNamePairs,
+                    commentsView: payload,
                 });
             }
             default:
@@ -626,7 +658,7 @@ function GlobalStoreContextProvider(props) {
                     storeReducer({
                         type: GlobalStoreActionType.SET_QUEUE,
                         payload: {
-                            queue: urls,
+                            queue: urls,    // ['jsfjlsdjf','h237hsdjk']
                             songNumberPlaying: 0,
                             songInPlayer: urls[0],
                             songNamePairs: playlist.songs,
@@ -683,6 +715,34 @@ function GlobalStoreContextProvider(props) {
             }
         }
         setPublished(id);
+    }
+
+    store.updateListens = function(id) {
+        async function setListens(id) {
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+                playlist.listens++;
+
+                async function updatePlaylist(playlist) {
+                    response = await api.updatePlaylistById(playlist._id, playlist);
+                    if (response.data.success) {
+                        response = await api.getPlaylistPairs();
+                        if (response.data.success){
+                            storeReducer({
+                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                                payload: {
+                                    idNamePairs: response.data.idNamePairs,
+                                    playlist: playlist
+                                }
+                            });
+                        }
+                    }
+                }
+                updatePlaylist(playlist);
+            }
+        }
+        setListens(id);
     }
 
     store.updateLikedPlaylist = function(id, isLike, alreadyLikedOrDisliked) {
@@ -753,6 +813,20 @@ function GlobalStoreContextProvider(props) {
             }
         }
         setDislikedPlaylist(id)
+    }
+
+    store.setCommentView = function(isCommentView) {
+        if (isCommentView) {
+            storeReducer({
+                type: GlobalStoreActionType.SET_PLAYER_VIEW,
+                payload: true
+            });
+        } else {
+            storeReducer({
+                type: GlobalStoreActionType.SET_PLAYER_VIEW,
+                payload: false
+            });
+        }
     }
 
     return (

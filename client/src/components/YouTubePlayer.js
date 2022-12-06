@@ -11,18 +11,15 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import IconButton from '@mui/material/IconButton';
 
 function YouTubePlayer(props) {
-
   const { store } = useContext(GlobalStoreContext);
   const { youTubeId } = props;
 
   let player = "";
 
-
-
   const onPlayerReady = (event) => {
     player = event.target;
-    console.log("player", player)
-    player.loadVideoById(store.songInPlayer);
+    // console.log("player", player)
+    // player.loadVideoById(store.songInPlayer);
   }
 
   const pauseVideo = (event) => {
@@ -42,8 +39,8 @@ function YouTubePlayer(props) {
   }
 
   const opts = {
-    height: '255',
-    width: '450',
+    height: '200',
+    width: '390',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
@@ -53,21 +50,18 @@ function YouTubePlayer(props) {
   let currentSong = store.songNamePairs[store.songNumber];
 
   return ( 
-    <div>
-      <div>
-        <Button variant="contained" sx={{ }}>Player</Button>
-        <Button variant="contained" sx={{ }}>Comments</Button>
-      </div>
-        
-      <div>
-        {store.songInPlayer ? <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady}/> : <div id="empty-player"></div>}
-
-        <div id="youtube-text">
-          <div>Playlist: {store.currentList ? store.currentList.name : 'Untitled'} </div>
-          <div>Song #: {store.songNumber + 1} </div>
-          <div>Title: {currentSong.title} </div>
-          <div>Artist: {currentSong.artist} </div>
-        </div>
+    <div id="player-workspace">
+        {store.songInPlayer ? 
+          <div>
+            <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady}/>
+            <div id="youtube-text">
+              <div>Playlist: {store.currentList ? store.currentList.name : 'Untitled'} </div>
+              <div>Song #: {store.songNumber + 1} </div>
+              <div>Title: {currentSong.title} </div>
+              <div>Artist: {currentSong.artist} </div>
+            </div>
+          </div>
+        : <div id="empty-player"></div>}
 
         <div id="youtube-player-buttons">
         <IconButton onClick={previousSong}> <SkipPreviousIcon/> </IconButton>
@@ -75,9 +69,6 @@ function YouTubePlayer(props) {
         <IconButton onClick={pauseVideo}> <StopIcon/> </IconButton>
         <IconButton onClick={nextSong}> <SkipNextIcon/> </IconButton>
         </div>
-      </div>
-     
-
     </div>
   
   );
