@@ -657,6 +657,45 @@ function GlobalStoreContextProvider(props) {
         });
     }
 
+    store.sortByName = function () {
+        store.idNamePairs.sort(function(p1, p2){
+            if (p1.name.toLowerCase() < p2.name.toLowerCase()) { 
+                return -1; 
+            }
+            if (p1.name.toLowerCase() > p2.name.toLowerCase()) { 
+                return 1; 
+            }
+            return 0;
+        });
+        history.push('/');
+    }
+
+    store.sortByPublished = function () {
+        store.idNamePairs.sort(function (x, y) { 
+            return new Date(y.date) - new Date(x.date);
+        });
+        history.push('/')
+    }
+
+    store.sortByListens = function () {
+        store.idNamePairs.sort(function (x, y) {
+            return y.listens - x.listens;
+        });
+        history.push('/');
+    }
+    store.sortByLikes = function () {
+        store.idNamePairs.sort(function (x, y) {
+            return y.likes - x.likes;
+        });
+        history.push('/');
+    }
+    store.sortByDislikes = function () {
+        store.idNamePairs.sort(function (x, y) {
+            return y.dislikes - x.dislikes;
+        });
+        history.push('/');
+    }
+
     store.updateQueue = function (id) {
         async function playFromBeginning(id) {
             let response = await api.getPlaylistById(id);
@@ -729,10 +768,17 @@ function GlobalStoreContextProvider(props) {
                 async function updatePublishedPlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        storeReducer({
-                            type: GlobalStoreActionType.SET_CURRENT_LIST,
-                            payload: playlist
-                        });
+                        response = await api.getPlaylistPairs(playlist._id, playlist);
+                        if (response.data.success) {
+                            storeReducer({
+                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                                payload: {
+                                    idNamePairs: response.data.idNamePairs,
+                                    playlist: playlist
+                                }
+                            });
+                            history.push("/")
+                        }
                     }
                 }
                 updatePublishedPlaylist(playlist);

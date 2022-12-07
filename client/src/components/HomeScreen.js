@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
@@ -23,6 +24,8 @@ import YouTubePlayer from './YouTubePlayer';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import YouTubeViewer from './YouTubeViewer';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 /*
     This React component lists all the top5 lists in the UI.
@@ -31,6 +34,8 @@ import YouTubeViewer from './YouTubeViewer';
 */
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
 
     let modalJSX = "";
     if(store.isEditSongModalOpen()){
@@ -48,9 +53,6 @@ const HomeScreen = () => {
         store.loadIdNamePairs();
     }, []);
 
-    function handleCreateNewList() {
-        store.createNewList();
-    }
     let listCard = "";
     if (store) {
         listCard = 
@@ -66,6 +68,60 @@ const HomeScreen = () => {
             }
             </List>;
     }
+
+    function handleOpenMenu(event) {
+        setAnchorEl(event.currentTarget);
+    }
+
+    function handleCloseMenu(event) {
+        setAnchorEl(null);
+    }
+
+    function handleSortByName() {
+        store.sortByName();
+    }
+
+    function handleSortByPublished() {
+        store.sortByPublished();
+    }
+
+    function handleSortByListens() {
+        store.sortByListens();
+    }
+    
+    function handleSortByLikes() {
+        store.sortByLikes();
+    }
+
+    function handleSortByDislikes() {
+        store.sortByDislikes();
+    }
+
+    const menuId = 'sort-menu';
+    const sortMenu = (
+        <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isMenuOpen}
+            onClose={handleCloseMenu}
+        >
+            <MenuItem onClick={handleSortByName}>{"Name (A-Z)"}</MenuItem>
+            <MenuItem onClick={handleSortByPublished}>{"Publish Date (Newest)"}</MenuItem>
+            <MenuItem onClick={handleSortByListens}>{"Listens (High-Low)"}</MenuItem>
+            <MenuItem onClick={handleSortByLikes}>{"Likes (High-Low)"}</MenuItem>
+            <MenuItem onClick={handleSortByDislikes}>{"Dislikes (High-Low)"}</MenuItem>
+        </Menu>
+    );
+
     return (
         <div>
             <div id="list-selector-list">
@@ -88,13 +144,16 @@ const HomeScreen = () => {
                 </IconButton>
                 
                 <TextField fullWidth sx={{paddingY:1}} id="outlined-basic" placeholder="Search" variant="outlined" size="small" margin="auto"/>
-                <IconButton>
+                <IconButton aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true" onClick={handleOpenMenu}>
                     <SortIcon sx={{ fontSize: 30, p:1}}/>Sort By
                 </IconButton>
+                {sortMenu}
             </div>
 
             <YouTubeViewer youTubeId={store.songInPlayer}/>
-
+                
             {modalJSX}
         </div>)
 }
