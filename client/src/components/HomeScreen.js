@@ -36,6 +36,7 @@ const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
+    const [textField, setText] = useState("");
 
     let modalJSX = "";
     if(store.isEditSongModalOpen()){
@@ -121,7 +122,30 @@ const HomeScreen = () => {
             <MenuItem onClick={handleSortByDislikes}>{"Dislikes (High-Low)"}</MenuItem>
         </Menu>
     );
+    
+    function handleSetText(event) {
+        setText(event.target.value);
+    }
+    
+    function handleSearchByHome() {
+        if (textField == "") {
+            store.loadIdNamePairs();
+        }
+        else {
+            store.searchAllUserPlaylists({ownerPlaylist: textField});
+        }
+        setText("");
+    }
 
+    function handleSearchByName() {
+        store.searchAllUserPlaylists({name: textField});
+        setText("");
+    }
+
+    function handleSearchByUsers() {
+        store.searchAllUserPlaylists({username: textField});
+        setText("");
+    }
     return (
         <div>
             <div id="list-selector-list">
@@ -132,18 +156,18 @@ const HomeScreen = () => {
             
             <div id="navigate-toolbar">
                 <IconButton>
-                    <HomeIcon sx={{ fontSize: 40 }}/>
+                    <HomeIcon sx={{ fontSize: 40 }} onClick={handleSearchByHome}/>
                 </IconButton>
 
                 <IconButton>
-                    <PeopleAltIcon sx={{ fontSize: 40 }}/>
+                    <PeopleAltIcon sx={{ fontSize: 40 }} onClick={handleSearchByName}/>
                 </IconButton>
                 
                 <IconButton>
-                    <PersonIcon sx={{ fontSize: 40 }}/>
+                    <PersonIcon sx={{ fontSize: 40 }} onClick={handleSearchByUsers}/>
                 </IconButton>
                 
-                <TextField fullWidth sx={{paddingY:1}} id="outlined-basic" placeholder="Search" variant="outlined" size="small" margin="auto"/>
+                <TextField fullWidth sx={{paddingY:1}} onChange={handleSetText} value={textField} id="outlined-basic" placeholder="Search" variant="outlined" size="small" margin="auto"/>
                 <IconButton aria-label="account of current user"
                             aria-controls={menuId}
                             aria-haspopup="true" onClick={handleOpenMenu}>
