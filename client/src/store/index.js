@@ -710,28 +710,26 @@ function GlobalStoreContextProvider(props) {
                     playingSong = urls[0]
                 }
 
-                console.log("listened", playlist)
-                if ((!store.currentList || (playlist._id != store.currentList._id)) && playlist.songs.length !=0) {
-                    playlist.listens++;
-                }
-
                 response = await api.updatePlaylistById(playlist._id, playlist);
                 if (response.data.success) {
-                    response = await api.getPlaylistPairs();
-                        storeReducer({
-                            type: GlobalStoreActionType.SET_QUEUE,
-                            payload: {
+                    let updatedPairs = store.idNamePairs;
+                    let playlistIndex = updatedPairs.findIndex((playlist) => playlist._id === id);
+                    
+                    if ((!store.currentList || (playlist._id !== store.currentList._id)) && playlist.songs.length !== 0) {
+                        updatedPairs[playlistIndex].listens++;
+                    }
+                    storeReducer({
+                        type: GlobalStoreActionType.SET_QUEUE,
+                        payload: {
                             currentList: playlist,
-                            idNamePairs: response.data.idNamePairs,
+                            idNamePairs: updatedPairs,
                             queue: urls,
                             songNumberPlaying: 0,
                             songInPlayer: playingSong,
                             songNamePairs: playlist.songs,
                             playlistName: playlist.name,
-                            currentList: playlist,
-                        }
+                    }
                     });
-                    history.push("/")
                 }
             }
         }
@@ -764,7 +762,9 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 playlist.published = true;
-
+                console.log("ee",Date.now())
+                playlist.timestamp = Date.now();
+                console.log(playlist.timestamp)
                 async function updatePublishedPlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
@@ -903,12 +903,11 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        response = await api.getPlaylistPairs();
                         if (response.data.success){
                             storeReducer({
                                 type: GlobalStoreActionType.UPDATE_PLAYLIST,
                                 payload: {
-                                    idNamePairs: response.data.idNamePairs,
+                                    idNamePairs: store.idNamePairs,
                                     playlist: playlist
                                 }
                             });
@@ -920,6 +919,34 @@ function GlobalStoreContextProvider(props) {
             }
         }
         setComment(id);
+    }
+
+    store.searchAllUserPlaylists = function(searchField) {
+        async function loadPlaylists(searchField) {
+            let response = await api.getAllPlaylistPairs();
+            if (response.data.success) {
+                let pairs = response.data.idNamePairs;
+                let filteredSearch = "";
+                // Home search
+                if (searchField.ownerPlaylist) {
+                    filteredSearch = pairs.filter((playlist) => (playlist.name === searchField.ownerPlaylist && auth.user.username === playlist.username));
+                }
+                // Search by playlist name
+                if (searchField.name) {
+                    filteredSearch = pairs.filter((playlist) => (playlist.name === searchField.name));
+                }
+                // Search by username
+                else if (searchField.username) {
+                    filteredSearch = pairs.filter((playlist) => (playlist.username === searchField.username));
+                }
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: filteredSearch,
+                });
+                // history.push("/")
+            }
+        }
+        loadPlaylists(searchField)
     }
 
     return (

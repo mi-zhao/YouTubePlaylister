@@ -134,10 +134,8 @@ function ListCard(props) {
     }
 
     function handlePlayFromBeginning(event, playlistId) {
-        // store.updateListens(playlistId);
+        console.log("here")
         store.updateQueue(playlistId);
-        console.log("store", store.songInPlayer)
-    }
     
     function handleLikes(event, playlistId) {
         event.stopPropagation();
