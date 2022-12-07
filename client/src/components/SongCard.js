@@ -37,9 +37,11 @@ function SongCard(props) {
         store.showRemoveSongModal(index, song);
     }
     function handleClick(event) {
-        // DOUBLE CLICK IS FOR SONG EDITING
-        if (event.detail === 2) {
+        if (event.detail === 1) {
             event.stopPropagation();
+            store.updateQueue(store.currentList._id, index);
+        }
+        if (event.detail === 2) {
             store.showEditSongModal(index, song);
         }
     }

@@ -696,18 +696,23 @@ function GlobalStoreContextProvider(props) {
         history.push('/');
     }
 
-    store.updateQueue = function (id) {
-        async function playFromBeginning(id) {
+    store.updateQueue = function (id, songNum) {
+        async function playFromBeginning(id, songNum) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 let urls = []
                 let playingSong = null
+                let index = 0
+                if (songNum) {
+                    index = songNum;
+                }
+
                 if (playlist.songs.length > 0) {
                     for (let i = 0; i < playlist.songs.length; i++) {
                         urls.push(playlist.songs[i].youTubeId)
                     }
-                    playingSong = urls[0]
+                    playingSong = urls[index]
                 }
 
                 response = await api.updatePlaylistById(playlist._id, playlist);
@@ -718,22 +723,23 @@ function GlobalStoreContextProvider(props) {
                     if ((!store.currentList || (playlist._id !== store.currentList._id)) && playlist.songs.length !== 0) {
                         updatedPairs[playlistIndex].listens++;
                     }
+                    
                     storeReducer({
                         type: GlobalStoreActionType.SET_QUEUE,
                         payload: {
                             currentList: playlist,
                             idNamePairs: updatedPairs,
                             queue: urls,
-                            songNumberPlaying: 0,
+                            songNumberPlaying: index,
                             songInPlayer: playingSong,
                             songNamePairs: playlist.songs,
                             playlistName: playlist.name,
-                    }
+                        }
                     });
                 }
             }
         }
-        playFromBeginning(id);
+        playFromBeginning(id, songNum);
     }
 
     store.playNextOrPrevSong = function (isNext) {
@@ -745,7 +751,6 @@ function GlobalStoreContextProvider(props) {
         } else if (!isNext && songIndex > 0) {
             songIndex--
         }
-        console.log("SONG INDEX", songIndex)
         storeReducer({
             type: GlobalStoreActionType.SET_SONG_TO_PLAY,
             payload: {

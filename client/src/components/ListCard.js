@@ -134,8 +134,7 @@ function ListCard(props) {
     }
 
     function handlePlayFromBeginning(event, playlistId) {
-        console.log("here")
-        store.updateQueue(playlistId);
+        store.updateQueue(playlistId, null);
     }
     
     function handleLikes(event, playlistId) {
@@ -183,6 +182,7 @@ function ListCard(props) {
         listSongClass = "published-list-songs"
     }
 
+    // UNPUBLISHED LIST //
     let cardElement =
         <ListItem
             id={idNamePair._id}
@@ -211,6 +211,7 @@ function ListCard(props) {
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
 
+    // PUBLISHED LIST //
     if (idNamePair.published) {
         cardElement =
         <ListItem
@@ -230,22 +231,22 @@ function ListCard(props) {
         >
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
             <div> <Box sx={{ position:'relative', fontSize: '9pt', pl:3}}>{"By: " + idNamePair.username}</Box> </div>
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + Date(idNamePair.timestamp).split(" ").slice(1,4).join(" ")}</Box>
-            <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
-            <Box sx={{ marginLeft:'40%'}}> 
-                <IconButton 
-                    onClick={(event) => {handleLikes(event, idNamePair._id)}}>
-                    {thumbsUpIcon}
-                </IconButton> 
-            </Box>
-            <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
-            <Box sx={{ marginLeft:'10%'}}> 
-                <IconButton
-                    onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
-                    {thumbsDownIcon}
-                </IconButton> 
-            </Box>
-            <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
+                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + Date(idNamePair.timestamp).split(" ").slice(1,4).join(" ")}</Box>
+                <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
+                <Box sx={{ marginLeft:'40%'}}> 
+                    <IconButton 
+                        onClick={(event) => {handleLikes(event, idNamePair._id)}}>
+                        {thumbsUpIcon}
+                    </IconButton> 
+                </Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
+                <Box sx={{ marginLeft:'10%'}}> 
+                    <IconButton
+                        onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
+                        {thumbsDownIcon}
+                    </IconButton> 
+                </Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
                 <IconButton onClick={(event) => {
                     store.closeCurrentList();
@@ -254,92 +255,51 @@ function ListCard(props) {
                     handleLoadList(event, idNamePair._id)
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
-        
-        if (expanded && store.currentList) {
-            cardElement =
-                <div className='unpublished-list'>   
-                    <ListItem
-                        id={idNamePair._id}
-                        key={idNamePair._id}
-                        className={"list-card selected-list-card"}
-                        sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
-                        style={{ width: '98%', height: '13cm'}}
-                        onClick={(event) => {
-                            if (event.detail == 2) {
-                                handleToggleEdit(event)
-                            }
-                        }}>
-                            
-                        <div className='list-names'>
-                            <Box sx={{}}>{idNamePair.name}</Box>
-                            <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
-                        </div>
-                                    
-                        <div className={listSongClass}>   {songCards}      </div>
-                        
-                        <div className='edit-toolbar'>
-                            {editToolbar(store.currentList.published)}
-
-                            <IconButton onClick={(event) => {
-                                handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
-                            </IconButton>
-
-                            <Box sx={{}}> <IconButton onClick={(event) => {
-                                event.stopPropagation();
-                                setExpanded(false);
-                                store.closeCurrentList();
-                            }}><BsChevronDoubleUp/></IconButton>
-                            </Box>
-                        </div>
-
-                    </ListItem>
-                </div>
-        }
     }
-    else {
-        if (expanded && store.currentList) {
-            cardElement =
-            <div className='unpublished-list'>   
-                <ListItem
-                    id={idNamePair._id}
-                    key={idNamePair._id}
-                    className={"list-card unselected-list-card"}
-                    sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
-                    style={{ width: '98%', height: '13cm'}}
-                    onClick={(event) => {
-                        if (event.detail == 2) {
-                            handleToggleEdit(event)
-                        }
-                    }}>
-                        
-                    <div className='list-names'>
-                        <Box sx={{}}>{idNamePair.name}</Box>
-                        <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
-                    </div>
-                                
-                    <div className='list-songs'>   {songCards}      </div>
+    
+    if (expanded && store.currentList) {
+        cardElement =
+        <div className='unpublished-list'>   
+            <ListItem
+                id={idNamePair._id}
+                key={idNamePair._id}
+                className={"list-card unselected-list-card"}
+                sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
+                style={{ width: '98%', height: '13cm'}}
+                onClick={(event) => {
+                    if (event.detail == 2) {
+                        handleToggleEdit(event)
+                    }
+                }}>
                     
-                    <div className='edit-toolbar'>
-                        {editToolbar(store.currentList.published)}
+                <div className='list-names'>
+                    <Box sx={{}}>{idNamePair.name}</Box>
+                    <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
+                </div>
+                            
+                <div className={listSongClass}>   {songCards}      </div>
+                
+                <div className='edit-toolbar'>
+                    {editToolbar(store.currentList.published)}
 
-                        <IconButton onClick={(event) => {
-                            handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
-                        </IconButton>
+                    <IconButton onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
+                    </IconButton>
 
-                        <Box sx={{}}> 
-                            <IconButton 
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                setExpanded(false);
-                                store.closeCurrentList();
-                            }}><BsChevronDoubleUp/></IconButton>
-                        </Box>
-                    </div>
+                    <Box sx={{}}> 
+                        <IconButton 
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            setExpanded(false);
+                            store.closeCurrentList();
+                        }}><BsChevronDoubleUp/></IconButton>
+                    </Box>
+                </div>
 
-                </ListItem>
-            </div>
-        }
+            </ListItem>
+        </div>
     }
+    
     if (editActive) {
         cardElement =
             <TextField

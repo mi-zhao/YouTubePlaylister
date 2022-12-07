@@ -18,6 +18,7 @@ function YouTubePlayer(props) {
 
   const onPlayerReady = (event) => {
       player = event.target;
+      console.log("eep")
   }
 
   const onPlayerStateChange = (event) => {
