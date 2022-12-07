@@ -20,6 +20,13 @@ function YouTubePlayer(props) {
       player = event.target;
   }
 
+  const onPlayerStateChange = (event) => {
+    // Handles when the video ends
+    if (event.data === 0) {          
+      nextSong();
+  }
+  }
+
   const pauseVideo = (event) => {
     if (store.currentList) {
       player.pauseVideo();
@@ -58,7 +65,7 @@ function YouTubePlayer(props) {
     <div id="player-workspace">
         {store.songInPlayer ? 
           <div>
-            <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady}/>
+            <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady} onStateChange={onPlayerStateChange}/>
             <div id="youtube-text">
               <div>Playlist: {store.playlistName ? store.playlistName : 'Untitled'} </div>
               <div>Song #: {store.songNumber + 1} </div>

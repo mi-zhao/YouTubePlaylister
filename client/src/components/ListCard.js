@@ -136,6 +136,7 @@ function ListCard(props) {
     function handlePlayFromBeginning(event, playlistId) {
         console.log("here")
         store.updateQueue(playlistId);
+    }
     
     function handleLikes(event, playlistId) {
         event.stopPropagation();
