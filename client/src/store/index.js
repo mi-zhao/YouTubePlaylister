@@ -825,16 +825,13 @@ function GlobalStoreContextProvider(props) {
                 async function updateLikes(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        response = await api.getPlaylistPairs();
-                        if (response.data.success) {
-                            storeReducer({
-                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                                payload: {
-                                    idNamePairs: response.data.idNamePairs,
-                                    playlist: playlist
-                                }
-                            });
-                        }
+                        storeReducer({
+                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                            payload: {
+                                idNamePairs: response.data.idNamePairs,
+                                playlist: playlist
+                            }
+                        });
                     }
                 }
                 updateLikes(playlist);
@@ -903,16 +900,14 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        if (response.data.success){
-                            storeReducer({
-                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                                payload: {
-                                    idNamePairs: store.idNamePairs,
-                                    playlist: playlist
-                                }
-                            });
-                            history.push("/")
-                        }
+                        storeReducer({
+                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                            payload: {
+                                idNamePairs: store.idNamePairs,
+                                playlist: playlist
+                            }
+                        });
+                        history.push("/")
                     }
                 }
                 updatePlaylist(playlist);

@@ -24,7 +24,7 @@ function YouTubePlayer(props) {
     // Handles when the video ends
     if (event.data === 0) {          
       nextSong();
-  }
+    }
   }
 
   const pauseVideo = (event) => {
