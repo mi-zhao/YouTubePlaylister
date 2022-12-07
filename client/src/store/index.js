@@ -929,10 +929,6 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success) {
                 let pairs = response.data.idNamePairs;
                 let filteredSearch = "";
-                // Home search
-                if (searchField.ownerPlaylist) {
-                    filteredSearch = pairs.filter((playlist) => (playlist.name === searchField.ownerPlaylist && auth.user.username === playlist.username));
-                }
                 // Search by playlist name
                 if (searchField.name) {
                     filteredSearch = pairs.filter((playlist) => (playlist.name === searchField.name));

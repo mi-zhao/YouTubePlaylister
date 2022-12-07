@@ -267,7 +267,9 @@ function ListCard(props) {
                 sx={{ display:'flex', flexDirection:'column', alignItems:'left' }}
                 style={{ width: '98%', height: '13cm'}}
                 onClick={(event) => {
-                    if (event.detail == 2) {
+                    if (event.detail == 1) {
+                    }
+                    else if (event.detail == 2) {
                         handleToggleEdit(event)
                     }
                 }}>
@@ -299,7 +301,7 @@ function ListCard(props) {
             </ListItem>
         </div>
     }
-    
+
     if (editActive) {
         cardElement =
             <TextField
@@ -319,8 +321,6 @@ function ListCard(props) {
                 autoFocus
             />
     }
-
-
 
     return (
         cardElement

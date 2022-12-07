@@ -128,23 +128,21 @@ const HomeScreen = () => {
     }
     
     function handleSearchByHome() {
-        if (textField == "") {
-            store.loadIdNamePairs();
-        }
-        else {
-            store.searchAllUserPlaylists({ownerPlaylist: textField});
-        }
-        setText("");
+        store.loadIdNamePairs();
     }
 
     function handleSearchByName() {
-        store.searchAllUserPlaylists({name: textField});
-        setText("");
+        if (textField !== "") {
+           store.searchAllUserPlaylists({name: textField});
+            setText("");
+        }
     }
 
     function handleSearchByUsers() {
-        store.searchAllUserPlaylists({username: textField});
-        setText("");
+        if (textField !== "") {
+            store.searchAllUserPlaylists({username: textField});
+            setText("");
+        }
     }
     return (
         <div>
