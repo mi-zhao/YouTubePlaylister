@@ -150,7 +150,7 @@ getPlaylistPairs = async (req, res) => {
                             likes: list.likes,
                             dislikes: list.dislikes,
                             listens: list.listens,
-                            timestamp: Date.now(),
+                            timestamp: new Date(),
                             published: list.published,
                             username: list.ownerUsername
                         };

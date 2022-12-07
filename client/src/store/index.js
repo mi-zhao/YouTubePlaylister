@@ -762,9 +762,8 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success) {
                 let playlist = response.data.playlist;
                 playlist.published = true;
-                console.log("ee",Date.now())
-                playlist.timestamp = Date.now();
-                console.log(playlist.timestamp)
+                playlist.timestamp = new Date();
+                console.log("time",playlist.timestamp)
                 async function updatePublishedPlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
@@ -825,13 +824,16 @@ function GlobalStoreContextProvider(props) {
                 async function updateLikes(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        storeReducer({
-                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                            payload: {
-                                idNamePairs: response.data.idNamePairs,
-                                playlist: playlist
-                            }
-                        });
+                        response = await api.getPlaylistPairs();
+                        if (response.data.success) {
+                            storeReducer({
+                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                                payload: {
+                                    idNamePairs: response.data.idNamePairs,
+                                    playlist: playlist
+                                }
+                            });
+                        }
                     }
                 }
                 updateLikes(playlist);
