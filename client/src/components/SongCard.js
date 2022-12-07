@@ -44,6 +44,18 @@ function SongCard(props) {
         }
     }
 
+    let removeSongButton = 
+        <input
+            type="button"
+            id={"remove-song-" + index}
+            className="list-card-button"
+            value={"\u2715"}
+            onClick={handleRemoveSong}/>
+      
+    if (store.currentList.published) {
+        removeSongButton = <div></div>
+    }    
+
     let cardClass = "song-card";
     return (
         <div
@@ -65,13 +77,7 @@ function SongCard(props) {
                 href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
                 {song.title} by {song.artist}
             </a>
-            <input
-                type="button"
-                id={"remove-song-" + index}
-                className="list-card-button"
-                value={"\u2715"}
-                onClick={handleRemoveSong}
-            />
+            {removeSongButton}
         </div>
     );
 }
