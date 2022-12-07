@@ -76,26 +76,25 @@ const HomeScreen = () => {
             
             <div id="navigate-toolbar">
                 <IconButton>
-                    <HomeIcon sx={{ fontSize: 30 }}/>
+                    <HomeIcon sx={{ fontSize: 40 }}/>
                 </IconButton>
 
                 <IconButton>
-                    <PeopleAltIcon sx={{ fontSize: 30 }}/>
+                    <PeopleAltIcon sx={{ fontSize: 40 }}/>
                 </IconButton>
                 
                 <IconButton>
-                    <PersonIcon sx={{ fontSize: 30 }}/>
+                    <PersonIcon sx={{ fontSize: 40 }}/>
                 </IconButton>
                 
-                <TextField  sx={{marginLeft:"2in", width:"35em"}} id="outlined-basic" label="Search" variant="outlined" size="small" margin="auto"/>
+                <TextField fullWidth sx={{paddingY:1}} id="outlined-basic" placeholder="Search" variant="outlined" size="small" margin="auto"/>
                 <IconButton>
-                    <SortIcon sx={{ p: 1 }}/>   
+                    <SortIcon sx={{ fontSize: 30, p:1}}/>Sort By
                 </IconButton>
             </div>
 
-            {/* <div id="youtube-viewer">  */}
-                <YouTubeViewer youTubeId={store.songInPlayer}/>
-            {/* </div> */}
+            <YouTubeViewer youTubeId={store.songInPlayer}/>
+
             {modalJSX}
         </div>)
 }

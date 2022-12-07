@@ -54,14 +54,13 @@ function YouTubePlayer(props) {
   };
 
   let currentSong = store.songNamePairs[store.songNumber];
-
   return ( 
     <div id="player-workspace">
         {store.songInPlayer ? 
           <div>
             <YouTube id='youtube-player' videoId={youTubeId} opts={opts} onReady={onPlayerReady}/>
             <div id="youtube-text">
-              <div>Playlist: {store.currentList ? store.currentList.name : 'Untitled'} </div>
+              <div>Playlist: {store.playlistName ? store.playlistName : 'Untitled'} </div>
               <div>Song #: {store.songNumber + 1} </div>
               <div>Title: {currentSong.title} </div>
               <div>Artist: {currentSong.artist} </div>
@@ -70,10 +69,10 @@ function YouTubePlayer(props) {
         : <div id="empty-player"></div>}
 
         <div id="youtube-player-buttons">
-        <IconButton onClick={previousSong}> <SkipPreviousIcon/> </IconButton>
-        <IconButton onClick={playVideo}> <PlayArrowIcon/> </IconButton>
-        <IconButton onClick={pauseVideo}> <StopIcon/> </IconButton>
-        <IconButton onClick={nextSong}> <SkipNextIcon/> </IconButton>
+          <IconButton onClick={previousSong}> <SkipPreviousIcon/> </IconButton>
+          <IconButton onClick={playVideo}> <PlayArrowIcon/> </IconButton>
+          <IconButton onClick={pauseVideo}> <StopIcon/> </IconButton>
+          <IconButton onClick={nextSong}> <SkipNextIcon/> </IconButton>
         </div>
     </div>
   

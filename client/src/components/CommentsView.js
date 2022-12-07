@@ -14,9 +14,7 @@ function CommentsView(props) {
     
     function handleKeyPress(event) {
         event.stopPropagation();
-        console.log("event", event)
         if (event.code === 'Enter' && store.currentList) {
-            event.stopPropagation();
             store.postComment(textField);
             setText("");
         }
@@ -28,13 +26,15 @@ function CommentsView(props) {
 
     let commentCards = <div></div>
     if (store.currentList) {
-        {console.log(store.currentList.comments)}
         commentCards = 
         <div id='comment-cards'>
             <List>
             {
-                store.currentList.comments.map((comment) => (
+                store.currentList.comments.map((comment, index) => (
                     <CommentCard
+                        id={'comment-card-' + (index)}
+                        key={'comment-card-' + (index)}
+                        index={index}
                         comment={comment}
                     />
                 ))  

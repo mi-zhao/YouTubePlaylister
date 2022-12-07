@@ -77,8 +77,6 @@ function ListCard(props) {
         setEditActive(newActive);
     }
 
-
-
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         let _id = event.target.id;
@@ -136,8 +134,9 @@ function ListCard(props) {
     }
 
     function handlePlayFromBeginning(event, playlistId) {
-        // store.updateListens(id);
+        // store.updateListens(playlistId);
         store.updateQueue(playlistId);
+        console.log("store", store.songInPlayer)
     }
     
     function handleLikes(event, playlistId) {
@@ -193,7 +192,6 @@ function ListCard(props) {
             onClick={(event) => {
                 if (event.detail == 1) {
                     handlePlayFromBeginning(event, idNamePair._id);
-                    console.log("eh")
                 }
                 else if (event.detail == 2) {
                     handleToggleEdit(event);
