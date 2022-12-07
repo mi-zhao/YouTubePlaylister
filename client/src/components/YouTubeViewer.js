@@ -31,7 +31,6 @@ function YouTubeViewer(props) {
                 <Button variant="contained" sx={{}} onClick={handlePlayer}>Player</Button>
                 <Button variant="contained" sx={{}} onClick={handleComments}>Comments</Button>                
             </div>
-            
             {store.commentsView ? <CommentsView/> : <YouTubePlayer youTubeId={youTubeId}/>}
         </div>
     );

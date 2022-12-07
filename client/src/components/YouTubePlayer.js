@@ -17,9 +17,7 @@ function YouTubePlayer(props) {
   let player = "";
 
   const onPlayerReady = (event) => {
-    player = event.target;
-    // console.log("player", player)
-    // player.loadVideoById(store.songInPlayer);
+      player = event.target;
   }
 
   const pauseVideo = (event) => {

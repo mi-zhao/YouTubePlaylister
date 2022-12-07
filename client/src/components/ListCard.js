@@ -2,19 +2,15 @@ import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
-import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import { BsChevronDoubleDown, BsChevronDoubleUp } from 'react-icons/bs';
 import SongCard from './SongCard.js'
 import List from '@mui/material/List';
-import { Button } from '@mui/material';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import EditToolbar from './EditToolbar';
-import Grid from '@mui/material/Grid';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -145,10 +141,7 @@ function ListCard(props) {
     }
     
     function handleLikes(event, playlistId) {
-        
         event.stopPropagation();
-        {console.log("likedalready", liked)}
-    {console.log("disliked", disliked)}
         let newlike = !liked
         let newdislike = !disliked
         if (!newlike && newdislike) {
@@ -200,6 +193,7 @@ function ListCard(props) {
             onClick={(event) => {
                 if (event.detail == 1) {
                     handlePlayFromBeginning(event, idNamePair._id);
+                    console.log("eh")
                 }
                 else if (event.detail == 2) {
                     handleToggleEdit(event);

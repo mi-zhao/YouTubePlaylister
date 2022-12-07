@@ -21,6 +21,7 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
+                username: existingUser.username,
                 email: loggedInUser.email
             }
         })
@@ -75,6 +76,7 @@ loginUser = async (req, res) => {
             user: {
                 firstName: existingUser.firstName,
                 lastName: existingUser.lastName,  
+                username: existingUser.username,
                 email: existingUser.email              
             }
         })
