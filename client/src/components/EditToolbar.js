@@ -32,9 +32,13 @@ function EditToolbar(props) {
         store.closeCurrentList();
     }
 
-    function handlePublish(event) {
+    function handlePublish() {
         store.publishPlaylist();
     }   
+
+    function handleDuplicate() {
+        store.duplicatePlaylist();
+    }
 
     let playlistButtons = 
     <div>
@@ -67,17 +71,13 @@ function EditToolbar(props) {
                 <CloseIcon />
         </Button>
         
-        <Button onClick={handlePublish}>
-                    Publish
-                </Button>
-                <Button>
-                    Duplicate
-                </Button>
+        <Button onClick={handlePublish}> Publish </Button>
+        <Button onClick={handleDuplicate}> Duplicate </Button>
         </div>
 
     if (isPublished) {
         playlistButtons = 
-            <Button>
+            <Button onClick={handleDuplicate}>
                 Duplicate
             </Button>
     }

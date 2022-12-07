@@ -24,12 +24,10 @@ const api = axios.create({
 // CUSTOM FILTERS FOR QUERIES
 export const createPlaylist = (newListName, newSongs, userEmail, username) => {
     return api.post(`/playlist/`, {
-        // SPECIFY THE PAYLOAD
         name: newListName,
         songs: newSongs,
         ownerUsername: username,
-        ownerEmail: userEmail,
-        username: username
+        ownerEmail: userEmail
     })
 }
 export const deletePlaylistById = (id) => api.delete(`/playlist/${id}`)

@@ -787,6 +787,27 @@ function GlobalStoreContextProvider(props) {
         setPublished(id);
     }
 
+    store.duplicatePlaylist = function() {
+        let playlist = store.currentList;
+        async function createDuplicatePlaylist(playlist) {
+            let response = await api.createPlaylist(playlist.name, playlist.songs, playlist.ownerEmail, playlist.ownerUsername);
+            if (response.status === 201) {
+                tps.clearAllTransactions();
+                let newList = response.data.playlist;
+                storeReducer({
+                    type: GlobalStoreActionType.CREATE_NEW_LIST,
+                    payload: newList
+                });
+                store.loadIdNamePairs();
+                history.push("/");
+            }
+            else {
+                console.log("Duplicate playlist was not created!");
+            }
+        }
+        createDuplicatePlaylist(playlist);
+    }
+
     store.updateLikedPlaylist = function(id, isLike, alreadyLikedOrDisliked) {
         async function setLikedPlaylist(id) {
             let response = await api.getPlaylistById(id);
