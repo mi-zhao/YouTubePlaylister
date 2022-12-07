@@ -160,8 +160,6 @@ function ListCard(props) {
 
     function handleDislikes(event, playlistId) {
         event.stopPropagation();
-        {console.log("likedalready", liked)}
-    {console.log("disliked", disliked)}
         let newlike = !liked
         let newdislike = !disliked
         if (!newdislike && newlike) {
@@ -173,12 +171,16 @@ function ListCard(props) {
             store.updateDislikedPlaylist(playlistId, true, false);
         }
         else if (!newlike && newdislike) {
-            
             console.log("Already liked playlist but want to dislike instead")
             store.updateDislikedPlaylist(playlistId, true, true);
             setLiked(newlike)
         }
         setDisliked(newdislike)
+    }
+
+    let listSongClass = "list-songs"
+    if (idNamePair.published) {
+        listSongClass = "published-list-songs"
     }
 
     let cardElement =
@@ -273,7 +275,7 @@ function ListCard(props) {
                             <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
                         </div>
                                     
-                        <div className='list-songs'>   {songCards}      </div>
+                        <div className={listSongClass}>   {songCards}      </div>
                         
                         <div className='edit-toolbar'>
                             {editToolbar(store.currentList.published)}

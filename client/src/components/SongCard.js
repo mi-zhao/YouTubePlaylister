@@ -52,16 +52,18 @@ function SongCard(props) {
             value={"\u2715"}
             onClick={handleRemoveSong}/>
       
+    let songCardClass = "song-card"
+
     if (store.currentList.published) {
         removeSongButton = <div></div>
+        songCardClass = "published-song-card";
     }    
 
-    let cardClass = "song-card";
     return (
         <div
             key={index}
             id={'song-' + index + '-card'}
-            className={cardClass}
+            className={songCardClass}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnter={handleDragEnter}
