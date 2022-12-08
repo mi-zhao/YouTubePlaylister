@@ -13,6 +13,7 @@ export const AuthActionType = {
     LOGOUT_USER: "LOGOUT_USER",
     REGISTER_USER: "REGISTER_USER",
     ACCOUNT_USER_FAILED: "ACCOUNT_USER_FAILED",
+    GUEST: "GUEST",
 }
 
 function AuthContextProvider(props) {
@@ -21,6 +22,7 @@ function AuthContextProvider(props) {
         loggedIn: false,
         error: false,
         errormessage: null,
+        guest: false,
     });
     const history = useHistory();
 
@@ -37,6 +39,7 @@ function AuthContextProvider(props) {
                     loggedIn: payload.loggedIn,
                     error: false,
                     errormessage: null,
+                    guest: auth.guest,
                 });
             }
             case AuthActionType.LOGIN_USER: {
@@ -45,6 +48,7 @@ function AuthContextProvider(props) {
                     loggedIn: true,
                     error: false,
                     errormessage: null,
+                    guest: auth.guest,
                 })
             }
             case AuthActionType.LOGOUT_USER: {
@@ -53,6 +57,7 @@ function AuthContextProvider(props) {
                     loggedIn: false,
                     error: false,
                     errormessage: null,
+                    guest: auth.guest,
                 })
             }
             case AuthActionType.REGISTER_USER: {
@@ -61,6 +66,7 @@ function AuthContextProvider(props) {
                     loggedIn: true,
                     error: false,
                     errormessage: null,
+                    guest: auth.guest,
                 })
             }
             case AuthActionType.ACCOUNT_USER_FAILED: {
@@ -68,11 +74,57 @@ function AuthContextProvider(props) {
                     user: null,
                     loggedIn: false,
                     error: payload.error,
-                    errormessage: payload.errormessage
+                    errormessage: payload.errormessage,
+                    guest: auth.guest,
+                })
+            }
+            case AuthActionType.GUEST: {
+                return setAuth({
+                    user: payload.user,
+                    loggedIn: true,
+                    error: payload.error,
+                    errormessage: payload.errormessage,
+                    guest: true,
                 })
             }
             default:
                 return auth;
+        }
+    }
+
+    auth.isGuest = async function () {
+        try {
+            let response = await api.registerUser("Guest", "Account", "guest@aol.com", "guestuser", "password", "password");
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST,
+                    payload: {
+                        user: response.data.user
+                    }
+                })
+                response = await api.loginUser("guest@aol.com","password");
+                if (response.status === 200) {
+                    authReducer({
+                        type: AuthActionType.GUEST,
+                        payload: {
+                            user: response.data.user
+                        }
+                    })
+                    history.push("/");
+                }
+            }
+        } catch (err) {
+            let response2 = await api.loginUser("guest@aol.com","password");
+            console.log("here",response2)
+            if (response2.status === 200) {
+                authReducer({
+                    type: AuthActionType.GUEST,
+                    payload: {
+                        user: response2.data.user
+                    }
+                })
+                history.push("/");
+            }
         }
     }
 

@@ -25,19 +25,27 @@ function Statusbar() {
     function handleCreateNewList() {
             store.createNewList();
     }
+
+    let statusbar = 
+    <div id="playlister-statusbar" className={statusName}>
+        <Fab 
+            color="primary" 
+            aria-label="add"
+            id="add-list-button"
+            onClick={handleCreateNewList}
+            size="medium"
+        >
+            <AddIcon />
+        </Fab>
+            <Typography variant="h3">Your Lists</Typography>
+    </div> 
+
+    if (auth.guest) {
+        statusbar = <div id="playlister-statusbar" className={statusName}></div>
+    }
+
     return (
-        <div id="playlister-statusbar" className={statusName}>
-            <Fab 
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-                size="medium"
-            >
-                <AddIcon />
-            </Fab>
-                <Typography variant="h3">Your Lists</Typography>
-        </div> 
+        statusbar
     );
 }
 

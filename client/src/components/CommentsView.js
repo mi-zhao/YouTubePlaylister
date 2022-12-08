@@ -1,15 +1,13 @@
 import React, {useContext, useState} from "react";
 import { GlobalStoreContext } from '../store'
-import PropTypes from "prop-types";
-import { Button } from '@mui/material';
-import { Box } from "@mui/material";
-import YouTube, { YouTubeProps } from 'react-youtube';
+import AuthContext from '../auth'
 import TextField from "@mui/material/TextField";
 import List from '@mui/material/List';
 import CommentCard from "./CommentCard";
 
 function CommentsView(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [textField, setText] = useState("");
     
     function handleKeyPress(event) {
@@ -43,12 +41,18 @@ function CommentsView(props) {
         </div>
     }
 
+    let commentbuttons = 
+        <div id="comment-buttons">
+            <TextField fullWidth sx={{}} onKeyPress={handleKeyPress} onChange={handleSetText} value={textField} id="outlined-basic" placeholder="Comment" variant="outlined" size="small" margin="auto"/>
+        </div>
+    if (auth.guest) {
+        commentbuttons = <div></div>
+    }
+
     return ( 
         <div id="comments-viewer">
             <div id="comment-cards">{commentCards}</div>
-            <div id="comment-buttons">
-                <TextField fullWidth sx={{}} onKeyPress={handleKeyPress} onChange={handleSetText} value={textField} id="outlined-basic" placeholder="Comment" variant="outlined" size="small" margin="auto"/>
-            </div>
+            {commentbuttons}
         </div>
     );
 }

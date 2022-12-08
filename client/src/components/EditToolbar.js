@@ -82,7 +82,7 @@ function EditToolbar(props) {
 
     if (isPublished) {
         playlistButtons = 
-            <Button onClick={handleDuplicate}>
+            <Button disabled={auth.guest} onClick={handleDuplicate}>
                 Duplicate
             </Button>
     }

@@ -1,5 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import EditIcon from '@mui/icons-material/Edit';
+import { IconButton } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
@@ -34,30 +37,36 @@ function SongCard(props) {
         store.addMoveSongTransaction(sourceIndex, targetIndex);
     }
     function handleRemoveSong(event) {
+        event.stopPropagation();
         store.showRemoveSongModal(index, song);
+    }
+
+    function handleEditSong(event) {
+        event.stopPropagation();
+        store.showEditSongModal(index, song);
     }
     function handleClick(event) {
         if (event.detail === 1) {
             event.stopPropagation();
             store.updateQueue(store.currentList._id, index);
         }
-        if (event.detail === 2) {
-            store.showEditSongModal(index, song);
-        }
     }
 
     let removeSongButton = 
-        <input
-            type="button"
-            id={"remove-song-" + index}
-            className="list-card-button"
-            value={"\u2715"}
-            onClick={handleRemoveSong}/>
+        <IconButton id={"remove-song-" + index} className="list-card-button" onClick={handleRemoveSong}>
+            <ClearIcon/>
+        </IconButton>
+
+    let editSongButton =
+        <IconButton id={"edit-song-" + index} className="list-card-button" onClick={handleEditSong}>
+            <EditIcon/>
+        </IconButton>
       
     let songCardClass = "song-card"
 
     if (store.currentList.published) {
         removeSongButton = <div></div>
+        editSongButton = <div></div>
         songCardClass = "published-song-card";
     }    
 
@@ -75,6 +84,9 @@ function SongCard(props) {
             onClick={handleClick}
         >
             <div id={'song-' + index + '-link'} className="song-link"> {index + 1}. {song.title} by {song.artist}</div>
+            <div id="song-space">
+            </div>
+            {editSongButton}
             {removeSongButton}
         </div>
     );

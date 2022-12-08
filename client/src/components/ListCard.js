@@ -214,9 +214,6 @@ function ListCard(props) {
                 if (event.detail == 1) {
                     handlePlayFromBeginning(event, idNamePair._id);
                 }
-                else if (event.detail == 2) {
-                    handleToggleEdit(event);
-                }
             }}
         >
             <Box sx={{ position:'absolute', top: '0px', pt:1, pl:3, fontSize: '18pt'}}>{idNamePair.name}</Box>
@@ -224,14 +221,14 @@ function ListCard(props) {
                 <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', p: 3}}>{"Published: " + Date(idNamePair.timestamp).split(" ").slice(1,4).join(" ")}</Box>
                 <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'56%', p: 3}}>{"Listens: " + idNamePair.listens}</Box>
                 <Box sx={{ marginLeft:'40%'}}> 
-                    <IconButton 
+                    <IconButton disabled={auth.guest}
                         onClick={(event) => {handleLikes(event, idNamePair._id)}}>
                         {thumbsUpIcon}
                     </IconButton> 
                 </Box>
                 <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
                 <Box sx={{ marginLeft:'10%'}}> 
-                    <IconButton
+                    <IconButton disabled={auth.guest}
                         onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
                         {thumbsDownIcon}
                     </IconButton> 
@@ -249,14 +246,14 @@ function ListCard(props) {
         publishedCard = 
         <div id="expanded-published-card">
                 <Box sx={{}}> 
-                    <IconButton 
+                    <IconButton disabled={auth.guest}
                         onClick={(event) => {handleLikes(event, idNamePair._id)}}>
                         {thumbsUpIcon}
                     </IconButton> 
                 </Box>
                 <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
                 <Box sx={{ marginLeft:'10%'}}> 
-                    <IconButton
+                    <IconButton disabled={auth.guest}
                         onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
                         {thumbsDownIcon}
                     </IconButton> 
@@ -275,7 +272,6 @@ function ListCard(props) {
     if (store.currentList) {
         expandButtons = 
         <div id="expanded-published-card-3">
-            {editToolbar(store.currentList.published)}
             <IconButton onClick={(event) => {
                 handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
             </IconButton>
@@ -295,7 +291,7 @@ function ListCard(props) {
                     if (event.detail == 1) {
                         handlePlayFromBeginning(event, idNamePair._id);
                     }
-                    else if (event.detail == 2) {
+                    else if (event.detail == 2 && !store.currentList.published) {
                         handleToggleEdit(event)
                     }
                 }}>
@@ -308,7 +304,7 @@ function ListCard(props) {
                 <div className={listSongClass}>   {songCards}      </div>
                 <div className='edit-toolbar'>
                     {publishedCard2}
-
+                    {editToolbar(store.currentList.published)}
                     {auth.user.username == idNamePair.username ? expandButtons : <div></div>}
 
                     <Box sx={{}}> 

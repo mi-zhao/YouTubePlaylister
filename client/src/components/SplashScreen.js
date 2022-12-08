@@ -5,19 +5,15 @@ import logo from '../music_player.png'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import AuthContext from '../auth';
+import { useContext } from 'react';
+import React from 'react';
 
 export default function SplashScreen() {
-
-    function handleCreateAccount() {
-        console.log("account clicked!")
-    }
-
-    function handleLogin() {
-        console.log("login clicked!")
-    }
+    const { auth } = useContext(AuthContext); 
 
     function handleGuest() {
-        console.log("guest clicked!")
+        auth.isGuest();
     }  
 
     return (
@@ -28,12 +24,12 @@ export default function SplashScreen() {
 
             <Box sx={{ '& button': { m: 4 } }}>
                 <Link to="/register/">
-                    <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleCreateAccount}>
+                    <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} >
                         Create Account
                     </Button>
                 </Link>
                     <Link to="/login/">
-                        <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }} onClick={handleLogin}>
+                        <Button variant="contained" sx={{ mt: 3, mb: 2, color: 'black', backgroundColor:"#AFA6C8" }}>
                             Login
                         </Button>
                     </Link>

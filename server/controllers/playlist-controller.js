@@ -30,12 +30,12 @@ createPlaylist = (req, res) => {
         console.log("user found: " + JSON.stringify(user));
         console.log("user trying to access: ",user.email)
         console.log("target user: ", body.ownerEmail)
-        if (user.email != body.ownerEmail) {
-            return res.status(400).json({
-                success: false,
-                errorMessage: "You cannot edit someone's playlist!"
-            })
-        }
+        // if (user.email != body.ownerEmail) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         errorMessage: "You cannot edit someone's playlist!"
+        //     })
+        // }
 
         console.log("playlist is now", playlist)
 

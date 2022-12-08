@@ -697,6 +697,21 @@ function GlobalStoreContextProvider(props) {
         history.push('/');
     }
 
+    store.getAllPlaylistPairs = function () {
+        async function getAllUsers() {
+            let response = await api.getAllPlaylistPairs();
+            if (response.data.success) {
+                let idNamePairs = response.data.idNamePairs;
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: idNamePairs
+                });
+                history.push('/')
+            }
+        }
+        getAllUsers()
+    }
+
     store.updateQueue = function (id, songNum) {
         async function playFromBeginning(id, songNum) {
             let response = await api.getPlaylistById(id);
@@ -794,7 +809,7 @@ function GlobalStoreContextProvider(props) {
     store.duplicatePlaylist = function() {
         let playlist = store.currentList;
         async function createDuplicatePlaylist(playlist) {
-            let response = await api.createPlaylist(playlist.name, playlist.songs, playlist.ownerEmail, playlist.ownerUsername);
+            let response = await api.createPlaylist(playlist.name, playlist.songs, auth.user.email, auth.user.username);
             if (response.status === 201) {
                 tps.clearAllTransactions();
                 let newList = response.data.playlist;

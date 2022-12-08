@@ -1,39 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
-
-import AddIcon from '@mui/icons-material/Add';
-import Fab from '@mui/material/Fab'
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography'
-
-import Button from '@mui/material/Button';
-
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import { Icon } from '@mui/material';
-import { InputAdornment } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
-import YouTubePlayer from './YouTubePlayer';
 import MUIEditSongModal from './MUIEditSongModal';
 import MUIRemoveSongModal from './MUIRemoveSongModal';
 import YouTubeViewer from './YouTubeViewer';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AuthContext from '../auth';
 
-/*
-    This React component lists all the top5 lists in the UI.
-    
-    @author McKilla Gorilla
-*/
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const [textField, setText] = useState("");
@@ -51,7 +36,12 @@ const HomeScreen = () => {
     }
 
     useEffect(() => {
-        store.loadIdNamePairs();
+        if (auth.guest) {
+            store.getAllPlaylistPairs();
+        }
+        else {
+            store.loadIdNamePairs();
+        }
     }, []);
 
     let listCard = "";
@@ -153,7 +143,7 @@ const HomeScreen = () => {
             </div>
             
             <div id="navigate-toolbar">
-                <IconButton>
+                <IconButton disabled={auth.guest}>
                     <HomeIcon sx={{ fontSize: 40 }} onClick={handleSearchByHome}/>
                 </IconButton>
 

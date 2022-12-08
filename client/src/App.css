@@ -108,6 +108,10 @@ body {
   flex-direction:row;
 }
 
+#song-space {
+  flex-grow: 1;
+}
+
 .list-names {
   display: flex;
   flex-direction: column;
