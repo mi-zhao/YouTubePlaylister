@@ -81,10 +81,26 @@ body {
   /* justify-content: space-between; */
 }
 
-.unpublished-list {
+.expanded-list {
   display: flex;
   flex-direction: column;
+  flex:1;
   /* justify-content: space-between; */
+}
+
+#expanded-published-card {
+  display:flex;
+  flex-direction:row;
+  /* padding-bottom: 10%; */
+  /* margin-top: auto; */
+  /* margin-bottom: auto; */
+}
+
+#expanded-published-card-2 {
+  display:flex;
+  flex-direction:column;
+  margin-right: auto;
+  /* padding: 1rem; */;
 }
 
 .list-names {
@@ -92,8 +108,9 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   padding:10px;
-  padding-left: 40px;
-  width: 100%;
+  padding-left: 20px;
+  width: 50%;
+  margin-right: auto;
 }
 
 .list-songs {

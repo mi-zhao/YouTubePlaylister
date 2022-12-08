@@ -464,6 +464,7 @@ function GlobalStoreContextProvider(props) {
         }
         processDelete(id);
     }
+
     store.deleteMarkedList = function() {
         store.deleteList(store.listIdMarkedForDeletion);
         store.unmarkListForDeletion();
@@ -768,7 +769,6 @@ function GlobalStoreContextProvider(props) {
                 let playlist = response.data.playlist;
                 playlist.published = true;
                 playlist.timestamp = new Date();
-                console.log("time",playlist.timestamp)
                 async function updatePublishedPlaylist(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
@@ -816,29 +816,32 @@ function GlobalStoreContextProvider(props) {
         async function setLikedPlaylist(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
+                let updatedPairs = store.idNamePairs;
+                let playlistIndex = updatedPairs.findIndex((playlist) => playlist._id === id);
+
                 let playlist = response.data.playlist;
                 if (isLike) {
                     if (alreadyLikedOrDisliked) {
                         playlist.dislikes--
+                        updatedPairs[playlistIndex].dislikes--;
                     }
                     playlist.likes++
+                    updatedPairs[playlistIndex].likes++;
                 } else {
                     playlist.likes--
+                    updatedPairs[playlistIndex].likes--;
                 } 
                 
                 async function updateLikes(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        response = await api.getPlaylistPairs();
-                        if (response.data.success) {
-                            storeReducer({
-                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                                payload: {
-                                    idNamePairs: response.data.idNamePairs,
-                                    playlist: playlist
-                                }
-                            });
-                        }
+                        storeReducer({
+                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                            payload: {
+                                idNamePairs: updatedPairs,
+                                playlist: playlist
+                            }
+                        });
                     }
                 }
                 updateLikes(playlist);
@@ -851,29 +854,32 @@ function GlobalStoreContextProvider(props) {
         async function setDislikedPlaylist(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
+                let updatedPairs = store.idNamePairs;
+                let playlistIndex = updatedPairs.findIndex((playlist) => playlist._id === id);
+
                 let playlist = response.data.playlist;
                 if (isDislike) {
                     if (alreadyLikedOrDisliked) {
                         playlist.likes--
+                        updatedPairs[playlistIndex].likes--;
                     }
                     playlist.dislikes++
+                    updatedPairs[playlistIndex].dislikes++;
                 } else {
                     playlist.dislikes--
+                    updatedPairs[playlistIndex].dislikes--;
                 } 
                 
                 async function updateDislikes(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
                     if (response.data.success) {
-                        response = await api.getPlaylistPairs();
-                        if (response.data.success) {
-                            storeReducer({
-                                type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                                payload: {
-                                    idNamePairs: response.data.idNamePairs,
-                                    playlist: playlist
-                                }
-                            });
-                        }
+                        storeReducer({
+                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
+                            payload: {
+                                idNamePairs: updatedPairs,
+                                playlist: playlist
+                            }
+                        });
                     }
                 }
                 updateDislikes(playlist);

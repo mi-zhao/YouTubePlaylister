@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
@@ -18,6 +19,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 function ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [editActive, setEditActive] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [text, setText] = useState("");
@@ -211,6 +213,8 @@ function ListCard(props) {
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
 
+    let publishedCard = <div></div>
+    let publishedCard2 = <div></div>
     // PUBLISHED LIST //
     if (idNamePair.published) {
         cardElement =
@@ -255,11 +259,46 @@ function ListCard(props) {
                     handleLoadList(event, idNamePair._id)
                 }}><BsChevronDoubleDown/></IconButton> </Box>
         </ListItem>
+
+        publishedCard = 
+        <div id="expanded-published-card">
+                <Box sx={{}}> 
+                    <IconButton 
+                        onClick={(event) => {handleLikes(event, idNamePair._id)}}>
+                        {thumbsUpIcon}
+                    </IconButton> 
+                </Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
+                <Box sx={{ marginLeft:'10%'}}> 
+                    <IconButton
+                        onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
+                        {thumbsDownIcon}
+                    </IconButton> 
+                </Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
+        </div>
+
+        publishedCard2 = 
+        <div id="expanded-published-card-2">
+            <Box sx={{fontSize: '12pt', fontSize:'10pt', pl:3}}>{"Published: " + Date(idNamePair.timestamp).split(" ").slice(1,4).join(" ")}</Box>
+            <Box sx={{fontSize: '12pt', fontSize:'10pt', pl:3, pb:3, pt:1}}>{"Listens: " + idNamePair.listens}</Box>
+        </div>
+    }
+
+    let expandButtons = <div></div>
+    if (store.currentList) {
+        expandButtons = 
+        <div>
+        {editToolbar(store.currentList.published)}
+        <IconButton onClick={(event) => {
+            handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
+        </IconButton>
+        </div>
     }
     
     if (expanded && store.currentList) {
         cardElement =
-        <div className='unpublished-list'>   
+        <div className='expanded-list'>   
             <ListItem
                 id={idNamePair._id}
                 key={idNamePair._id}
@@ -268,6 +307,7 @@ function ListCard(props) {
                 style={{ width: '98%', height: '13cm'}}
                 onClick={(event) => {
                     if (event.detail == 1) {
+                        handlePlayFromBeginning(event, idNamePair._id);
                     }
                     else if (event.detail == 2) {
                         handleToggleEdit(event)
@@ -276,17 +316,14 @@ function ListCard(props) {
                     
                 <div className='list-names'>
                     <Box sx={{}}>{idNamePair.name}</Box>
-                    <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box>
-                </div>
-                            
+                    <Box sx={{fontSize:'15px', marginTop:'10px'}}>{"By: " + idNamePair.username}</Box> 
+                </div>     
+                    {publishedCard}
                 <div className={listSongClass}>   {songCards}      </div>
-                
                 <div className='edit-toolbar'>
-                    {editToolbar(store.currentList.published)}
+                    {publishedCard2}
 
-                    <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
-                    </IconButton>
+                    {auth.user.username == idNamePair.username ? expandButtons : <div></div>}
 
                     <Box sx={{}}> 
                         <IconButton 

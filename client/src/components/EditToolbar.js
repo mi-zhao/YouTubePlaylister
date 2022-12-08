@@ -1,5 +1,6 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth'
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
@@ -14,6 +15,7 @@ import CloseIcon from '@mui/icons-material/HighlightOff';
 */
 function EditToolbar(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const { isPublished } = props;
 
     function handleAddNewSong(event) {
@@ -29,14 +31,17 @@ function EditToolbar(props) {
         store.redo();
     }
     function handleClose(event) {
+        event.stopPropagation();
         store.closeCurrentList();
     }
 
-    function handlePublish() {
+    function handlePublish(event) {
+        event.stopPropagation();
         store.publishPlaylist();
     }   
 
-    function handleDuplicate() {
+    function handleDuplicate(event) {
+        event.stopPropagation();
         store.duplicatePlaylist();
     }
 
