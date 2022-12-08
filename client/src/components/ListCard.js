@@ -268,14 +268,14 @@ function ListCard(props) {
                         {thumbsUpIcon}
                     </IconButton> 
                 </Box>
-                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
                 <Box sx={{ marginLeft:'10%'}}> 
                     <IconButton
                         onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
                         {thumbsDownIcon}
                     </IconButton> 
                 </Box>
-                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
         </div>
 
         publishedCard2 = 
@@ -288,11 +288,11 @@ function ListCard(props) {
     let expandButtons = <div></div>
     if (store.currentList) {
         expandButtons = 
-        <div>
-        {editToolbar(store.currentList.published)}
-        <IconButton onClick={(event) => {
-            handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
-        </IconButton>
+        <div id="expanded-published-card-3">
+            {editToolbar(store.currentList.published)}
+            <IconButton onClick={(event) => {
+                handleDeleteList(event, idNamePair._id)}} aria-label='delete'> <DeleteIcon style={{fontSize:'24pt'}} />
+            </IconButton>
         </div>
     }
     

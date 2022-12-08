@@ -22,8 +22,12 @@ const playlistSchema = new Schema(
             comment: String,
         }], required: false, default: [] },
         listens: { type: Number, default: 0, required: false },
-        likes: { type: Number, default: 0, required: false },
-        dislikes: {type: Number, default: 0, required: false }
+        likes: { type: [{
+            username: String
+        }], default: [], required: false },
+        dislikes: { type: [{
+            username: String
+        }], default: [], required: false },
     },
     { timestamps: true },
 )

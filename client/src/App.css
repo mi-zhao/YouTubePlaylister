@@ -103,6 +103,11 @@ body {
   /* padding: 1rem; */;
 }
 
+#expanded-published-card-3 {
+  display:flex;
+  flex-direction:row;
+}
+
 .list-names {
   display: flex;
   flex-direction: column;
