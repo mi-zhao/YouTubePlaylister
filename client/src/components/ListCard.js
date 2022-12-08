@@ -141,42 +141,28 @@ function ListCard(props) {
     
     function handleLikes(event, playlistId) {
         event.stopPropagation();
-        let newlike = !liked
-        let newdislike = !disliked
-        if (!newlike && newdislike) {
-            console.log("Already liked playlist, unlike it");
-            store.updateLikedPlaylist(playlistId, false, false);
+        let newlike = !liked;
+        let newdislike = disliked;
+        if(newlike && disliked){
+            setDisliked(false);
+            newdislike = false;
         }
-        if (newlike && newdislike) {
-            console.log("Never liked or disliked, like playlist");
-            store.updateLikedPlaylist(playlistId, true, false);
-        }
-        else if (newlike && !newdislike) {
-            console.log("Already disliked playlist but want to like instead");
-            store.updateLikedPlaylist(playlistId, true, true);
-            setDisliked(newdislike)
-        }
-        setLiked(newlike)
+        setLiked(newlike);
+        console.log("likessss", newlike, newdislike)
+        store.updateLikesDislikes(playlistId,newlike, newdislike)
     }
 
     function handleDislikes(event, playlistId) {
+        console.log("dislike")
         event.stopPropagation();
-        let newlike = !liked
-        let newdislike = !disliked
-        if (!newdislike && newlike) {
-            console.log("Already disliked playlist, undo dislike");
-            store.updateDislikedPlaylist(playlistId, false, false);
+        let newlike = liked;
+        let newdislike = !disliked;
+        if(newdislike && liked){
+            setLiked(false);
+            newlike = false;
         }
-        if (newlike && newdislike) {
-            console.log("Never liked or disliked, dislike playlist");
-            store.updateDislikedPlaylist(playlistId, true, false);
-        }
-        else if (!newlike && newdislike) {
-            console.log("Already liked playlist but want to dislike instead")
-            store.updateDislikedPlaylist(playlistId, true, true);
-            setLiked(newlike)
-        }
-        setDisliked(newdislike)
+        setDisliked(newdislike);
+        store.updateLikesDislikes(playlistId,newlike, newdislike)
     }
 
     let listSongClass = "list-songs"
@@ -243,14 +229,14 @@ function ListCard(props) {
                         {thumbsUpIcon}
                     </IconButton> 
                 </Box>
-                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes}</Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
                 <Box sx={{ marginLeft:'10%'}}> 
                     <IconButton
                         onClick={(event) => {handleDislikes(event, idNamePair._id)}}>
                         {thumbsDownIcon}
                     </IconButton> 
                 </Box>
-                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes}</Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes.length}</Box>
             <Box sx={{ position: 'absolute', fontSize: '9pt', marginTop: '10%', marginLeft:'85%', p: 3}}> 
                 <IconButton onClick={(event) => {
                     store.closeCurrentList();
@@ -275,7 +261,7 @@ function ListCard(props) {
                         {thumbsDownIcon}
                     </IconButton> 
                 </Box>
-                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.likes.length}</Box>
+                <Box sx={{ fontSize: '12pt', p:1}}>{idNamePair.dislikes.length}</Box>
         </div>
 
         publishedCard2 = 

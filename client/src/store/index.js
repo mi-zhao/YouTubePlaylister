@@ -812,80 +812,49 @@ function GlobalStoreContextProvider(props) {
         createDuplicatePlaylist(playlist);
     }
 
-    store.updateLikedPlaylist = function(id, isLike, alreadyLikedOrDisliked) {
-        async function setLikedPlaylist(id) {
+    store.updateLikesDislikes = function(id, newLike, newDislike){
+        async function asyncUpdateRatings(id, newLike, newDislike){
             let response = await api.getPlaylistById(id);
-            if (response.data.success) {
-                let updatedPairs = store.idNamePairs;
-                let playlistIndex = updatedPairs.findIndex((playlist) => playlist._id === id);
 
+            if (response.data.success) {
                 let playlist = response.data.playlist;
-                if (isLike) {
-                    if (alreadyLikedOrDisliked) {
-                        playlist.dislikes--
-                        updatedPairs[playlistIndex].dislikes--;
-                    }
-                    playlist.likes++
-                    updatedPairs[playlistIndex].likes++;
-                } else {
-                    playlist.likes--
-                    updatedPairs[playlistIndex].likes--;
-                } 
-                
-                async function updateLikes(playlist) {
-                    response = await api.updatePlaylistById(playlist._id, playlist);
-                    if (response.data.success) {
-                        storeReducer({
-                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                            payload: {
-                                idNamePairs: updatedPairs,
-                                playlist: playlist
-                            }
-                        });
-                    }
+
+                if (newLike) { 
+                    playlist.likes.push({
+                        username : auth.user.username
+                    })
                 }
-                updateLikes(playlist);
+                else if (!newLike) {
+                    playlist.likes = playlist.likes.filter((user) => (user.username !== auth.user.username))
+                }
+                
+                if (newDislike) {
+                    playlist.dislikes.push({
+                        username : auth.user.username
+                    })
+                }
+                else if (!newDislike) {
+                    playlist.dislikes = playlist.dislikes.filter((user) => (user.username !== auth.user.username))
+                }
+                
+                response = await api.updatePlaylistById(id, playlist)
+                if(response.data.success){
+                    let newIdNamePairs = store.idNamePairs;
+                    let index = newIdNamePairs.findIndex(pair => {return pair._id === playlist._id});
+
+                    newIdNamePairs[index].likes = playlist.likes;
+                    newIdNamePairs[index].dislikes = playlist.dislikes;
+                    storeReducer({
+                        type : GlobalStoreActionType.UPDATE_PLAYLIST,
+                        payload : {
+                            playlist : playlist,
+                            idNamePairs : newIdNamePairs
+                        }
+                    })
+                }
             }
         }
-        setLikedPlaylist(id)
-    }
-
-    store.updateDislikedPlaylist = function(id, isDislike, alreadyLikedOrDisliked) {
-        async function setDislikedPlaylist(id) {
-            let response = await api.getPlaylistById(id);
-            if (response.data.success) {
-                let updatedPairs = store.idNamePairs;
-                let playlistIndex = updatedPairs.findIndex((playlist) => playlist._id === id);
-
-                let playlist = response.data.playlist;
-                if (isDislike) {
-                    if (alreadyLikedOrDisliked) {
-                        playlist.likes--
-                        updatedPairs[playlistIndex].likes--;
-                    }
-                    playlist.dislikes++
-                    updatedPairs[playlistIndex].dislikes++;
-                } else {
-                    playlist.dislikes--
-                    updatedPairs[playlistIndex].dislikes--;
-                } 
-                
-                async function updateDislikes(playlist) {
-                    response = await api.updatePlaylistById(playlist._id, playlist);
-                    if (response.data.success) {
-                        storeReducer({
-                            type: GlobalStoreActionType.UPDATE_PLAYLIST,
-                            payload: {
-                                idNamePairs: updatedPairs,
-                                playlist: playlist
-                            }
-                        });
-                    }
-                }
-                updateDislikes(playlist);
-            }
-        }
-        setDislikedPlaylist(id)
+        asyncUpdateRatings(id, newLike, newDislike)
     }
 
     store.setCommentView = function (isCommentView) {
